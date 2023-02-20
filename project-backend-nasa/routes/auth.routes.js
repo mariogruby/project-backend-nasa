@@ -157,11 +157,9 @@ router.get("/logout", isLoggedIn, (req, res) => {
 });
 
 router.get("/list", (req, res, next)=>{
-  //consultar a la API de IH -> recuperar personajes
-  // axios.get(BASE_URL)
   nasaService.listnews()
   .then(response => {
-      console.log(response.data);
+      //console.log(response.data);
       let data = {
           news: response.data
       }
@@ -169,5 +167,20 @@ router.get("/list", (req, res, next)=>{
   })  
   .catch(err => next(err))
 });
+
+/* router.get("/get/:date", (req, res, next)=> {
+  nasaService.getNews(req.params.date)
+  .then(response => {
+    let prueba = response.json()
+    console.log(prueba)
+    //console.log("FECHA ", req.params.date)
+    let data = {
+      news: response.data
+    }
+    //console.log(data)
+    res.render("/")
+    //res.render("", data)
+  })
+}) */
 
 module.exports = router;
