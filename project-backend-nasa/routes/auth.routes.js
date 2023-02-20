@@ -8,6 +8,9 @@ const mongoose = require("mongoose");
 // How many rounds should bcrypt run the salt (default - 10 rounds)
 const saltRounds = 10;
 
+//Nasa API
+const nasaService = require("../services/nasa.service");
+
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 
@@ -151,6 +154,20 @@ router.get("/logout", isLoggedIn, (req, res) => {
 
     res.redirect("/");
   });
+});
+
+router.get("/list", (req, res, next)=>{
+  //consultar a la API de IH -> recuperar personajes
+  // axios.get(BASE_URL)
+  nasaService.listnews()
+  .then(response => {
+      console.log(response.data);
+      let data = {
+          news: response.data
+      }
+      res.render("index", data);
+  })  
+  .catch(err => next(err))
 });
 
 module.exports = router;
