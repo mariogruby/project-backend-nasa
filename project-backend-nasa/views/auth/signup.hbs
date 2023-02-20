@@ -1,24 +1,31 @@
-<div id="form">
-  <h2>Sign Up</h2>
-  <form action="/auth/signup" method="POST">
-
-    <label> Username
-      <input type="text" name="username" placeholder="Your username" />
-    </label>
-
-    <label> Email
-      <input type="email" name="email" placeholder="Your email" />
-    </label>
-
-    <label> Password
-      <input type="password" name="password" placeholder="Your password" />
-    </label>
-
-    <button type="submit">Sign Up</button>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="ironhack-bcn">
+            <h1>Sign Up</h1>
+            <hr>
+              <form action="/auth/signup" method="POST">
+              <div class="mb-3">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username">
+                    <div class="form-text">poner los datos sin errores</div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email, Example: example@email.com</label>
+                    <input type="email" class="form-control" id="email" name="email">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                    <div class="form-text">crea una contraseña segura</div>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-dark">Sign Up</button>
+                </div>
 
 
     {{#if errorMessage}}
       <p class="error">{{errorMessage}}</p>
     {{/if}}
   </form>
+  </div>
 </div>
