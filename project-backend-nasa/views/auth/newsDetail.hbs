@@ -6,3 +6,13 @@
         <img src={{news.url}} alt="nasa">
         <p>{{news.explanation}}</p>
     </div>
+
+<div>
+    <form action="/news/{{news.date}}" method="post">
+        <label for="">
+            <input type="textarea" name="contenido">
+        </label>
+
+        <button type="submit">Enviar</button>
+    </form>
+</div>
