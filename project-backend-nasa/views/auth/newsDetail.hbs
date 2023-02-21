@@ -7,6 +7,18 @@
         <p>{{news.explanation}}</p>
     </div>
 
+    <div>
+        <h3>COMENTARIOS</h3>
+        {{#if news.comments}}
+            {{#each comments}}
+            <p></p>
+            {{/each}}
+        {{/if}}
+    </div>
+
+
+
+
 <div>
     <form action="/news/{{news.date}}" method="post">
         <label for="">

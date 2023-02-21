@@ -23,10 +23,6 @@ router.get ("/", isLoggedIn, (req,res,next) => {
     })  
     .catch(err => next(err))
 });
-/* router.post("/", (req, res, next) => {
-
-}); */
-  
   /////cuando hacemos click a la noticia y se habre en una nueva pagina
 
   /* router.get("/get/:date", (req, res, next)=> {
@@ -50,21 +46,28 @@ router.get ("/", isLoggedIn, (req,res,next) => {
   router.get("/:date", (req, res, next) => {
     nasaService.getNews(req.params.date)
     .then(response => {
+      console.log(response.data)
       let data = {
         news: response.data
-      }
+      } 
       res.render("auth/newsDetail", data);
     })
   })
   
   router.post("/:date", (req, res, next)=> {
+    let {date} = req.params;
     let author = req.session.currentUser._id;
-    let {contenido} = req.body
+    let {contenido} = req.body;
+    
     Comment.create({contenido, author})
     .then(result => {
-      console.log("qe: ", result)
-      res.redirect("/newDetail")
+      let comments = result._id
+      New.create({date, comments})
+      .then(result => {
+        console.log("New Model: ",result)
+      })
+      res.redirect(`/news/${date}`);
     })
-})
-
+  })
+  
   module.exports = router
