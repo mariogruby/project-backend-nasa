@@ -28,6 +28,11 @@ const userSchema = new Schema(
     },
     likes: {
       type: [Schema.Types.ObjectId], ref: "User"
+    },
+
+    isAdmin: {
+      type: Boolean,
+      default: false
     }
   },
   {

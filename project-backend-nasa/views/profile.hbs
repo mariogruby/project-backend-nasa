@@ -1,0 +1,10 @@
+<h2>Profile</h2>
+
+<h3>Name: {{user.name}}</h3>
+<h3>Email: {{user.email}}</h3>
+
+
+
+<form action="/profile/{{user._id}}/edit" method="get">
+<button>Edit profile</button>
+</form>
