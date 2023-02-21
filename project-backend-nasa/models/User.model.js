@@ -20,6 +20,15 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    news: {
+      type: [Schema.Types.ObjectId], ref: "New"
+    },
+    comments: {
+      type: [Schema.Types.ObjectId], ref: "Comment"
+    },
+    likes: {
+      type: [Schema.Types.ObjectId], ref: "User"
+    }
   },
   {
     // this second object adds extra properties: `createdAt` and `updatedAt`
