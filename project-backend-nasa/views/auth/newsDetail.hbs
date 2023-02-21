@@ -6,7 +6,12 @@
         <img src={{news.url}} alt="nasa">
         <p>{{news.explanation}}</p>
     </div>
-
+    {{#each Newscomments.result}}
+        <div>
+           <p>{{comments.0.contenido}}</p> 
+        </div>
+    {{/each}}
+{{!-- <p>{{Newscomments.result.1.comments.0.contenido}}</p> --}}
 <div>
     <form action="/news/{{news.date}}" method="post">
         <label for="">

@@ -10,7 +10,7 @@ const nasaService = require("../services/nasa.service");
 //modelos
 const User = require("../models/User.model");
 const Comment = require("../models/Comment.model");
-const New = require("../models/News.model");
+const News = require("../models/News.model");
 
 //AQUI LAS RUTAS NEWS
 router.get ("/", isLoggedIn, (req,res,next) => {
@@ -48,22 +48,33 @@ router.get ("/", isLoggedIn, (req,res,next) => {
   res.send( user._id) */
   
   router.get("/:date", (req, res, next) => {
-    nasaService.getNews(req.params.date)
-    .then(response => {
-      let data = {
-        news: response.data
-      }
-      res.render("auth/newsDetail", data);
+    let {date} = req.params;
+    News.find({date})
+    .populate("comments")
+      .then(result => {
+        nasaService.getNews(date)
+          .then(response => {
+            let data = {
+              news: response.data,
+              Newscomments: {result}
+            }
+            res.render("auth/newsDetail", data);
+          })
     })
   })
   
   router.post("/:date", (req, res, next)=> {
+    let {date} = req.params;
     let author = req.session.currentUser._id;
-    let {contenido} = req.body
+    let {contenido} = req.body;
+    
     Comment.create({contenido, author})
     .then(result => {
-      console.log("qe: ", result)
-      res.redirect("/newDetail")
+      let comments = result._id;
+      News.create({date, comments})
+      .then(result => {
+      })
+      res.redirect(`/news/${date}`)
     })
 })
 

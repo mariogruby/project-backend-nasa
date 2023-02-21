@@ -2,21 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const newSchema = new Schema(
     {
-        title: {
-            type: String,
-            required: true
-        },
         date: {
-            type: Date,
-            default: Date.now,
-            required: true
-        },
-        explanation: {
             type: String,
             required: true
-        },
-        imageURL: {
-            type: String
         },
         comments: {
             type: [Schema.Types.ObjectId], ref: "Comment",
@@ -28,6 +16,6 @@ const newSchema = new Schema(
     }
 );
 
-const New = model("New", newSchema);
+const News = model("News", newSchema);
 
-module.exports = New;
+module.exports = News;
