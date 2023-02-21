@@ -34,13 +34,13 @@ router.post("/signup", isLoggedOut, (req, res) => {
     return;
   }
 
-  // if (password.length < 6) {
-  //   res.status(400).render("auth/signup", {
-  //     errorMessage: "Your password needs to be at least 6 characters long.",
-  //   });
+  if (password.length < 6) {
+    res.status(400).render("auth/signup", {
+    errorMessage: "Your password needs to be at least 6 characters long.",
+    });
 
-  //   return;
-  // }
+     return;
+  }
 
   //   ! This regular expression checks password for special characters and minimum length
   /*

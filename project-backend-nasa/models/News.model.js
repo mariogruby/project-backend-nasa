@@ -28,6 +28,6 @@ const newSchema = new Schema(
     }
 );
 
-const New = model("User", newSchema);
+const New = model("New", newSchema);
 
 module.exports = New;
