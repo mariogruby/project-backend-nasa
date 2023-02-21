@@ -27,7 +27,7 @@ const MongoStore = require("connect-mongo");
 
 // Connects the mongo uri to maintain the same naming structure
 const MONGO_URI =
-  process.env.MONGODB_URI || "mongodb://127.0.0.1:27017/project-backend-nasa";
+  process.env.MONGODB_URI || "mongodb+srv://raulfh9:pmDFhmUtQNhUdCFz@nasa-backend.pfgtigo.mongodb.net/?retryWrites=true&w=majority";
 
 // Middleware configuration
 module.exports = (app) => {
