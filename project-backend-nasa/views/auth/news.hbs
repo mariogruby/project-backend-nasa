@@ -1,5 +1,12 @@
 <section>
     <h2>NEWS</h2>
+    {{#each news}}
+        <p>{{title}}</p>
+        <img src={{url}} alt="nasa">
+        <p>{{explanation}}</p>
+    {{/each}}
+
+
     {{!-- <ul>
         <li><a href="{{API}}"></a>{{API}}
             <img src="{{API}}" alt="">
