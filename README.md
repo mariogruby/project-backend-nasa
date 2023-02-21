@@ -32,22 +32,21 @@ const userSchema = new Schema({
   username: { type: String, required: true, unique: true},
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  passwordRepeat: { type: String, required: true},
-  comment: [{ type: Schema.Types.ObjectId, ref: "comment" }],
+  comment: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   isAdmin: Boolean,
 });
 ```
 #### Comment.model.js
 ```js
 const commentSchema = new Schema({
-    user:[{ type: Schema.Types.ObjectId, ref: "user" }],
+    user:{ type: Schema.Types.ObjectId, ref: "User" },
     date: { type: Date, default:Date.now, required: true},
     comment:{type: String, required: true}
 })
 ```
-#### Noticias.model.js
+#### New.model.js
 ```js
-const noticiasSchema = new Schema({
+const newSchema = new Schema({
     title: { type: String, required: true}
     date: { type: Date, default:Date.now, required: true}
     explanation: { type: String, required: true}
