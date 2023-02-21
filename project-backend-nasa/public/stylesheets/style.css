@@ -10,3 +10,11 @@ a {
 h1 {
   color: 15px;
 } */
+
+body{
+  background-color: rgb(157, 160, 163);
+}
+
+#logo{
+  width: 800px;
+}
