@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+const transporter = require("../config/transporter.config");
+// const templates = require("../templates/template");
 // ℹ️ Handles password encryption
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
@@ -16,13 +17,14 @@ const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 // GET /auth/signup
-router.get("/signup", isLoggedOut, (req, res) => {
+router.get("/signup", isLoggedOut, (req, res, next) => {
   res.render("auth/signup");
 });
 
 // POST /auth/signup
-router.post("/signup", isLoggedOut, (req, res) => {
+router.post("/signup", isLoggedOut, (req, res, next) => {
   const { username, email, password } = req.body;
+  
 
   // Check that username, email, and password are provided
   if (username === "" || email === "" || password === "") {
@@ -65,6 +67,16 @@ router.post("/signup", isLoggedOut, (req, res) => {
     })
     .then((user) => {
       //nodemailer aquí
+      transporter.sendMail({
+        from: `"NASA" <${process.env.EMAIL_ADDRESS}>`,
+        to: email,
+        subject: "HOLA, bienvenido a la nasa",
+        text: "message"
+        // html: templates.templateExample(message)
+      })
+      .then((info) => res.render("message", { email, subject, message, info }))
+      .catch((error) => console.log(error));
+    ///////////////////////////////
       res.redirect("/auth/login");
     })
     .catch((error) => {
