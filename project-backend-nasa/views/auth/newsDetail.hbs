@@ -6,14 +6,13 @@
         <p class="lead left col-md-6  mb-3 ms-md-3">{{news.explanation}}</p>
         </div>
     </div>
-<div>
-        <h3>COMENTARIOS</h3>
-        {{#if news.comments}}
-            {{#each comments}}
-            <p>{{this.content}}</p>
-            {{/each}}
-        {{/if}}
-    </div>
+
+    {{#each Newscomments.result.0.comments}}
+        <div>
+           <p>{{contenido}}</p> 
+        </div>
+    {{/each}}
+{{!-- <p>{{Newscomments.result.1.comments.0.contenido}}</p> --}}
 <div>
     <form action="/news/{{news.date}}" method="post">
         <label for="">
