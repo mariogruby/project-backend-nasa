@@ -40,10 +40,17 @@ router.get("/", isLoggedIn, (req, res, next) => {
 
 /////cuando hacemos click a la noticia y se habre en una nueva pagina
 
-router.get("/:date", (req, res, next) => {
+router.get("/:date", isLoggedIn, (req, res, next) => {
   let { date } = req.params;
   News.find({ date })
     .populate("comments")
+    .populate({
+      path: "comments",
+      populate: {
+        path: "author",
+        model: "User"
+      }
+    })
     .then(result => {
       nasaService.getNews(date)
         .then(response => {
@@ -51,8 +58,8 @@ router.get("/:date", (req, res, next) => {
             news: response.data,
             Newscomments: { result },
             user: req.session.currentUser
-          }
-          console.log("COMMMENTS: ", data.Newscomments)
+          }/* 
+          console.log("COMMMENTS: ", data.Newscomments.result[0].comments[3].author.username) */
           res.render("auth/newsDetail", data);
         })
     })
@@ -67,7 +74,7 @@ router.post("/:date", (req, res, next) => {
     Comment.create({ contenido, author })
       .then(result => {
         let comments = result._id;
-        News.findOneAndUpdate({ date }, { $push: { comments } })
+        News.findOneAndUpdate({ date }, { $push: { comments }, author })
           .then(result => {
             res.redirect(`/news/${date}`)
           })
