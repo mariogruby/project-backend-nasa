@@ -10,8 +10,13 @@ a {
 h1 {
   color: 15px;
 } */
-
-
+video {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height:100%;
+  z-index: -1;
+}
 #imgsize{
   width: 300px;
   height: 300px;
