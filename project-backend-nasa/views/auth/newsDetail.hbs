@@ -27,3 +27,57 @@
     <li class="page-item"><a class="page-link" href="/news/2023-01-12">12</a></li>
   </ul>
 </nav>
+    <div>
+        <h3>COMENTARIOS</h3>
+        {{#if news.comments}}
+            {{#each comments}}
+            <p></p>
+            {{/each}}
+        {{/if}}
+    </div>
+
+
+ <div>
+        <p class="h4">{{news.date}}</p>
+        <h1 class="card-title">{{news.title}}</h1>
+        <div class="clearfix">
+        <img src={{news.url}}  class="rounded float-left col-md-6  mb-3 ms-md-3 " id="img-id-config" alt="nasa">
+        <p class="lead left col-md-6  mb-3 ms-md-3">{{news.explanation}}</p>
+        </div>
+    </div>
+<div>
+        <h3>COMENTARIOS</h3>
+        {{#if news.comments}}
+            {{#each comments}}
+            <p></p>
+            {{/each}}
+        {{/if}}
+    </div>
+<div>
+    <form action="/news/{{news.date}}" method="post">
+        <label for="">
+            <input type="textarea" name="contenido">
+        </label>
+
+        <button type="submit">Enviar</button>
+    </form>
+</div>
+<nav aria-label="...">
+  <ul class="pagination pagination-sm">
+    <li class="page-item active" aria-current="page">
+      {{!-- <span class="page-link">1</span>
+    </li> --}}
+    <li class="page-item"><a class="page-link" href="/news/2023-01-01">1</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-02">2</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-03">3</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-04">4</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-05">5</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-06">6</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-07">7</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-08">8</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-09">9</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-10">10</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-11">11</a></li>
+    <li class="page-item"><a class="page-link" href="/news/2023-01-12">12</a></li>
+  </ul>
+</nav>
