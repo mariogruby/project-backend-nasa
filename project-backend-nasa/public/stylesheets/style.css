@@ -10,3 +10,38 @@ a {
 h1 {
   color: 15px;
 } */
+video {
+  position: fixed;
+  left: 0;
+  top: 0;
+  height:100%;
+  z-index: -1;
+}
+#imgsize{
+  width: 300px;
+  height: 300px;
+  object-fit: cover;
+}
+.card{
+
+  transition: all 0.2s ease;
+  cursor: pointer;
+  
+
+}
+  
+
+
+.card:hover{
+
+  box-shadow: 5px 6px 6px 2px #e9ecef;
+  transform: scale(1.1);
+}
+#img-id-config{
+  width: 700px;
+  height: 500px;
+}
+
+.pagination{
+  justify-content: center;
+}
