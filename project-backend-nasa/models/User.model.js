@@ -20,14 +20,18 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
-    news: {
-      type: [Schema.Types.ObjectId], ref: "New"
-    },
-    comments: {
-      type: [Schema.Types.ObjectId], ref: "Comment"
-    },
-    likes: {
-      type: [Schema.Types.ObjectId], ref: "User"
+    news: [{
+      type: Schema.Types.ObjectId, ref: "News"
+    }],
+    comments: [{
+      type: Schema.Types.ObjectId, ref: "Comment"
+    }],
+    likes: [{
+      type: Schema.Types.ObjectId, ref: "User"
+    }],
+    isAdmin: {
+    type: Boolean,
+    default: false,
     }
   },
   {

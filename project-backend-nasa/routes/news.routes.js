@@ -12,40 +12,33 @@ const User = require("../models/User.model");
 const Comment = require("../models/Comment.model");
 const News = require("../models/News.model");
 
-//AQUI LAS RUTAS NEWS
+//AQUI LA RUTA NEWS
 router.get ("/", isLoggedIn, (req,res,next) => {
     nasaService.listNews()
     .then(response => {
+      const newsApi = response.data
+      /* console.log("DATA: ", response.data) */
+      newsApi.forEach(oneNews => {
+        const {date} = oneNews
+        News.find({date})
+        .then(result => {
+          if(result.length == 0) {
+          News.create({date})
+          }
+        })
+        
+      });
         let data = {
-            news: response.data
+            news: response.data,
+            user: req.session.currentUser
         }
         res.render("auth/news", data);
     })  
     .catch(err => next(err))
 });
-/* router.post("/", (req, res, next) => {
 
-}); */
   
   /////cuando hacemos click a la noticia y se habre en una nueva pagina
-
-  /* router.get("/get/:date", (req, res, next)=> {
-    nasaService.getNews(req.params.date)
-    .then(response => {
-      let prueba = response.json()
-      console.log(prueba)
-      //console.log("FECHA ", req.params.date)
-      let data = {
-        news: response.data
-      }
-      //console.log(data)
-      res.render("/")
-      //res.render("", data)
-    })
-  }) */
-  
-  /*console.log("EMAIL: ", user._id)
-  res.send( user._id) */
   
   router.get("/:date", (req, res, next) => {
     let {date} = req.params;
@@ -56,11 +49,13 @@ router.get ("/", isLoggedIn, (req,res,next) => {
           .then(response => {
             let data = {
               news: response.data,
-              Newscomments: {result}
+              Newscomments: {result},
+              user: req.session.currentUser
             }
+            console.log("COMMMENTS: ", data.Newscomments)
             res.render("auth/newsDetail", data);
           })
-    })
+      })
   })
   
   router.post("/:date", (req, res, next)=> {
@@ -68,14 +63,16 @@ router.get ("/", isLoggedIn, (req,res,next) => {
     let author = req.session.currentUser._id;
     let {contenido} = req.body;
     
-    Comment.create({contenido, author})
-    .then(result => {
-      let comments = result._id;
-      News.create({date, comments})
-      .then(result => {
-      })
-      res.redirect(`/news/${date}`)
-    })
-})
+    if(contenido) {
+      Comment.create({contenido, author})
+        .then(result => {
+          let comments = result._id;
+          News.findOneAndUpdate({date}, {$push: {comments}})
+            .then(result => {
+              res.redirect(`/news/${date}`)
+            })
+        })
+    }
+  })
 
   module.exports = router
