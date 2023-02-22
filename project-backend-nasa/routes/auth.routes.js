@@ -153,34 +153,14 @@ router.get("/logout", isLoggedIn, (req, res) => {
     res.redirect("/auth/login");
   });
 });
+//Perfil
 
-router.get("/user/:id", (req, res, next) => {
 
-  console.log(req.session.currentUser + "AQUIIIIIIII")
-  console.log("AQUIIIIIIII")
 
-  const userId = req.params.id;
-  const user = req.session.currentUser;;
-  User.findById(userId)
+//Editar Perfil
 
-    .then((user) => {
-      res.render("profile", { user });
-    })
-    .catch((err) => console.log(err));
-});
 
-// router.post("/edit/:id", (req, res, next) => {
-//     let { Name, email } = req.body;
-//     let id = req.curranteUser.id
-//     let editedProfile = { name, email, }
-//     User.findOneAndUpdate({ _id: id }, editedProfile, { new: true })
-//         .then((data) => {
-//             res.redirect("/profile/:id")
-//         })
-//         .catch((err) => {
-//             console.log(err)
-//         })
-// })
+
 
 
 

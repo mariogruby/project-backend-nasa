@@ -7,7 +7,7 @@ const newSchema = new Schema(
             required: true
         },
         comments: [{
-            type:Schema.Types.ObjectId, ref: "Comment",
+            type: Schema.Types.ObjectId, ref: "Comment",
         }]
     },
 
@@ -17,10 +17,6 @@ const newSchema = new Schema(
     }
 );
 
-<<<<<<< HEAD
 const News = model("News", newSchema);
-=======
-const New = model("New", newSchema);
->>>>>>> Ivan
 
 module.exports = News;
