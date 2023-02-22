@@ -6,10 +6,9 @@ const newSchema = new Schema(
             type: String,
             required: true
         },
-        comments: [{
-            type: Schema.Types.ObjectId, ref: "Comment",
-        }]
+        comments: [{ type: Schema.Types.ObjectId, ref: "Comment",}]
     },
+
     {
         // this second object adds extra properties: `createdAt` and `updatedAt`
         timestamps: true,

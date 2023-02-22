@@ -53,8 +53,31 @@ router.get ("/", isLoggedIn, (req,res,next) => {
       res.render("auth/newsDetail", data);
     })
   })
+
+  router.post("/:date", (req,res, next) => {
+    let {date} = req.params;
+    const author = req.session.currentUser._id;
+    const {contenido} = req.body
+
+    Comment.create({contenido, author})
+    .then(result => {
+      User.findByIdAndUpdate(author, { $push: { comments: result._id } });
+      return result
+    })
+    .then ((result) => {
+      let comments = result._id
+      New.create({date, comments})
+      .then(result => {
+        return User.findByIdAndUpdate(comments, { $push: { comments: result._id } });
+      })
+    })
+    .then(() => {
+      res.redirect(`/news/${date}`);
+    })
+  })
   
-  router.post("/:date", (req, res, next)=> {
+ 
+  /* router.post("/:date", (req, res, next)=> {
     let {date} = req.params;
     let author = req.session.currentUser._id;
     let {contenido} = req.body;
@@ -68,6 +91,6 @@ router.get ("/", isLoggedIn, (req,res,next) => {
       })
       res.redirect(`/news/${date}`);
     })
-  })
+  }) */
   
   module.exports = router
