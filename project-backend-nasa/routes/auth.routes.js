@@ -16,12 +16,12 @@ const isLoggedOut = require("../middleware/isLoggedOut");
 const isLoggedIn = require("../middleware/isLoggedIn");
 
 // GET /auth/signup
-router.get("/signup", isLoggedOut, (req, res) => {
+router.get("/signup", isLoggedOut, (req, res, next) => {
   res.render("auth/signup");
 });
 
 // POST /auth/signup
-router.post("/signup", isLoggedOut, (req, res) => {
+router.post("/signup", isLoggedOut, (req, res, next) => {
   const { username, email, password } = req.body;
 
   // Check that username, email, and password are provided
@@ -143,7 +143,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 });
 
 // GET /auth/logout
-router.get("/logout", isLoggedIn, (req, res) => {
+router.get("/logout", isLoggedIn, (req, res, next) => {
   req.session.destroy((err) => {
     if (err) {
       res.status(500).render("auth/logout", { errorMessage: err.message });
@@ -155,11 +155,57 @@ router.get("/logout", isLoggedIn, (req, res) => {
 });
 //Perfil
 
+// GET /auth/profile
+
+router.get("/profile", (req, res, next) => {
+  //console.log(req.session.currentUser)
+  res.render("auth/profile", { user: req.session.currentUser });
+
+});
+
+router.get("/profile/:id/edit", (req, res, next) => {
+  const { id } = req.params;
+  /* console.log(req.params) */
+  res.render("auth/profileEdit", { user: req.session.currentUser })
+});
+
+router.post("/profile/:id/edit", (req, res, next) => {
+  const userId = req.params.id
+  const { username, email, password } = req.body;
+  console.log(req.body)
+  bcrypt
+    .genSalt(saltRounds)
+    .then((salt) => bcrypt.hash(password, salt))
+    .then((hashedPassword) => {
+      // Create a user and save it in the database
+      User.findByIdAndUpdate(userId, { username, email, password: hashedPassword })
+        .then(result => {
+
+          req.session.currentUser = req.body
+          console.log(result)
+
+          res.redirect("/auth/profile");
+        })
+    })
+
+})
+/* 
+router.post("/profile", (req, res, next) => {
+  const {id} = req.params;
+  res.redirect("/auth/profile")
+}); */
+
+/* router.get("/profile/:id", (req, res, next) => {
 
 
 //Editar Perfil
 
 
+    .then((user) => {
+      res.render("auth/profile", { user });
+    })
+    .catch((err) => console.log(err));
+}); */
 
 
 
