@@ -1,0 +1,30 @@
+<h2>NEWS DETAIL</h2>
+
+    <div>
+        <p>{{news.title}}</p>
+        <p>{{news.date}}</p>
+        <img src={{news.url}} alt="nasa">
+        <p>{{news.explanation}}</p>
+    </div>
+
+    <div>
+        <h3>COMENTARIOS</h3>
+        {{#if news.comments}}
+            {{#each comments}}
+            <p>{{this.content}}</p>
+            {{/each}}
+        {{/if}}
+    </div>
+
+
+
+
+<div>
+    <form action="/news/{{news.date}}" method="post">
+        <label for="">
+            <input type="textarea" name="contenido">
+        </label>
+
+        <button type="submit">Enviar</button>
+    </form>
+</div>
