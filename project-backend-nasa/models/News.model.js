@@ -17,10 +17,6 @@ const newSchema = new Schema(
     }
 );
 
-<<<<<<< HEAD
 const News = model("News", newSchema);
-=======
-const New = model("New", newSchema);
->>>>>>> Ivan
 
 module.exports = News;

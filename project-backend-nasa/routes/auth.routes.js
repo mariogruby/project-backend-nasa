@@ -34,13 +34,13 @@ router.post("/signup", isLoggedOut, (req, res) => {
     return;
   }
 
-  if (password.length < 6) {
-    res.status(400).render("auth/signup", {
-      errorMessage: "Your password needs to be at least 6 characters long.",
-    });
+   if (password.length < 6) {
+     res.status(400).render("auth/signup", {
+       errorMessage: "Your password needs to be at least 6 characters long.",
+     });
 
-    return;
-  }
+     return;
+   }
 
   //   ! This regular expression checks password for special characters and minimum length
   /*
@@ -64,7 +64,6 @@ router.post("/signup", isLoggedOut, (req, res) => {
       return User.create({ username, email, password: hashedPassword });
     })
     .then((user) => {
-      //nodemailer aquí
       res.redirect("/auth/login");
     })
     .catch((error) => {
@@ -88,10 +87,10 @@ router.get("/login", isLoggedOut, (req, res) => {
 
 // POST /auth/login
 router.post("/login", isLoggedOut, (req, res, next) => {
-  const { email, password } = req.body;
+  const { email,  password } = req.body;
 
   // Check that username, email, and password are provided
-  if (email === "" || password === "") {
+  if ( email === "" || password === "") {
     res.status(400).render("auth/login", {
       errorMessage:
         "All fields are mandatory. Please provide username, email and password.",
@@ -153,35 +152,6 @@ router.get("/logout", isLoggedIn, (req, res) => {
     res.redirect("/auth/login");
   });
 });
-
-router.get("/user/:id", (req, res, next) => {
-
-  console.log(req.session.currentUser + "AQUIIIIIIII")
-  console.log("AQUIIIIIIII")
-
-  const userId = req.params.id;
-  const user = req.session.currentUser;;
-  User.findById(userId)
-
-    .then((user) => {
-      res.render("profile", { user });
-    })
-    .catch((err) => console.log(err));
-});
-
-// router.post("/edit/:id", (req, res, next) => {
-//     let { Name, email } = req.body;
-//     let id = req.curranteUser.id
-//     let editedProfile = { name, email, }
-//     User.findOneAndUpdate({ _id: id }, editedProfile, { new: true })
-//         .then((data) => {
-//             res.redirect("/profile/:id")
-//         })
-//         .catch((err) => {
-//             console.log(err)
-//         })
-// })
-
 
 
 module.exports = router;
