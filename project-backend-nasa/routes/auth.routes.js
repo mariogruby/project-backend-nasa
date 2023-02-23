@@ -170,42 +170,37 @@ router.get("/logout", isLoggedIn, (req, res, next) => {
 
 // GET /auth/profile
 
-router.get("/profile", (req,res,next) => {
-  let id = req.session.currentUser._id
-  User.findById(id)
-  .populate("news comments likes")
-  .populate({
-    path: "likes",
-    populate: {
-      path: "comments",
-      model: "Comment",
-      populate:{
-        path: "news",
-        model: "News"
-      }
-    }
-  })
-  .then(result => {
-    console.log(result);
-    let data = {
-      profile: result,
-      user: req.session.currentUser
-    }
-    res.render("auth/profile", data)
+router.get("/profile/:id", (req,res,next) => {
+  /* let id = req.session.currentUser._id */
+  const userId = req.params.id;
+  /* const user = req.session.currentUser; */
+  User.findById(userId)
+  .then((user) => {
+    Comment.find({author: userId})
+    .populate("news")
+    .then(comments => {
+      res.render("auth/profile", { user, comments });
+    })
+    
   })
   .catch(err => { console.log(err)})
-  
 });
 
 router.get("/profile/:id/edit", (req,res,next) => {
-  /* const {id} = req.params; */
- /*  console.log(req.session.currentUser) */
-  /* console.log(req.params) */
-  res.render("auth/profileEdit", {user: req.session.currentUser})
+  const {id} = req.params;
+  if (req.session.currentUser._id == id || req.session.currentUser.isAdmin){
+    res.render("auth/profileEdit", {user: req.session.currentUser})
+  }
+  else  {
+    res.redirect("/news")
+  }
+
+  
 });
 
 router.post("/profile/:id/edit", (req,res,next) => {
     const userId = req.params.id;
+    console.log(userId)
     const { username, email, password } = req.body;
   
     User.findById(userId)
@@ -229,7 +224,7 @@ router.post("/profile/:id/edit", (req,res,next) => {
               User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
                 .then(updatedUser => {
                   req.session.currentUser = updatedUser;
-                  res.redirect('/auth/profile');
+                  res.redirect(`/auth/profile/${userId}`);
                 })
   
             })
@@ -240,7 +235,7 @@ router.post("/profile/:id/edit", (req,res,next) => {
           User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
             .then(updatedUser => {
               req.session.currentUser = updatedUser;
-              res.redirect('/auth/profile');
+              res.redirect(`/auth/profile/${userId}`);
             })
             .catch((error) => {
                   if (error instanceof mongoose.Error.ValidationError) {

@@ -2,16 +2,20 @@
 
 
 <div>
-<h3> {{user.username}}</h3>
-<h4>Email:{{user.email}}</h4>
-<h4>Comments:{{user.comments}}</h4>
-<h4>News:{{user.news}}</h4>
-<h4>Likes: {{user.likes}}</h4>
-
+    <h3> {{user.username}}</h3>
+    <h4>Email:{{user.email}}</h4>
+    <h4>Comments:</h4>
+        {{#each comments}}
+            <div>
+                <p>News: {{news.title}}</p>
+                <p>Date: {{date}}</p>
+                <p>Message: {{contenido}}</p>
+            </div>
+        {{/each}}
 </div>
 
 
-<a href="profile/{{user._id}}/edit">Editar Profile</a>
+<a href="{{user._id}}/edit">Editar Profile</a>
 {{!-- 
 <form action="/profile/{{user._id}}/edit" method="Post">
 <button>Edit profile</button>

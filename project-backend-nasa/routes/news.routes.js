@@ -17,7 +17,6 @@ router.get("/", isLoggedIn, (req, res, next) => {
   nasaService.listNews()
     .then(response => {
       const newsApi = response.data
-      /* console.log("DATA: ", response.data) */
       newsApi.forEach(oneNews => {
         const { date, title } = oneNews
         News.find({ date })
@@ -35,31 +34,52 @@ router.get("/", isLoggedIn, (req, res, next) => {
       res.render("auth/news", data);
     })
     .catch(err => next(err))
-});
+  });
+  
+  
+  /////cuando hacemos click a la noticia y se habre en una nueva pagina //////
+  router.get("/delete/:id", (req,res,next) => {
+    let id = req.params.id;
+    Comment.findByIdAndDelete(id)
+    .then(() => {
+      res.redirect(`/news`)
 
-
-/////cuando hacemos click a la noticia y se habre en una nueva pagina //////
+    })
+    .catch((err) => console.log(err))
+  })
 
 router.get("/:date", isLoggedIn, (req, res, next) => {
   let { date } = req.params;
-  News.find({ date })
-    .populate("comments")
-    .populate({
-      path: "comments",
-      populate: {
-        path: "author",
-        model: "User"
-      }
-    })
-    .then(result => {
-      nasaService.getNews(date)
-        .then(response => {
+  News.findOne({ date })
+  .populate("comments")
+  .populate({
+    path: "comments",
+    populate: {
+      path: "author",
+      model: "User"
+    }
+  })
+  .then(result => {
+    nasaService.getNews(date)
+    .then(response => {
+      let comments = [];
+      result.comments.forEach(comment => {
+        let commentAux = comment
+        console.log(comment)
+        if (req.session.currentUser._id == comment.author._id || req.session.currentUser.isAdmin){
+          commentAux.canDelete = true
+        }
+        comments.push(comment)
+          })
           let data = {
             news: response.data,
-            Newscomments: { result },
-            user: req.session.currentUser
-          }/* 
-          console.log("COMMMENTS: ", data.Newscomments.result[0].comments[3].author.username) */
+            Newscomments: result,
+            user: req.session.currentUser,
+          }
+          data.Newscomments.comments = comments
+          console.log("DATE: ", data.Newscomments.comments)
+          
+          /*  console.log("COMMMENTS: ", data.Newscomments.result[0].comments[3].author.username) */
           res.render("auth/newsDetail", data);
         })
     })
@@ -76,13 +96,16 @@ router.post("/:date", (req, res, next) => {
       Comment.create({ contenido, author, news: result.id })
       .then(resolve => {
         let comments = resolve._id;
-        News.findOneAndUpdate({ date }, { $push: { comments }, author })
+        News.findOneAndUpdate({ date }, { $push: { comments } })
           .then(result => {
+
             res.redirect(`/news/${date}`)
           })
       })
     })
   }
+
 })
+
 
 module.exports = router
