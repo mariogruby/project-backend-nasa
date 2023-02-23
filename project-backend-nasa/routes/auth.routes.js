@@ -184,34 +184,12 @@ router.get("/profile/:id", (req,res,next) => {
     })
     
   })
-  /* .populate("news comments likes")
-  .populate({
-    path: "likes",
-    populate: {
-      path: "comments",
-      model: "Comment",
-      populate:{
-        path: "news",
-        model: "News"
-      }
-    }
-  })
-  .then(result => {
-    console.log(result);
-    let data = {
-      profile: result,
-      user: req.session.currentUser
-    } */
-   /*  res.render("auth/profile", data)
-  }) */
   .catch(err => { console.log(err)})
   
 });
 
 router.get("/profile/:id/edit", (req,res,next) => {
-  /* const {id} = req.params; */
- /*  console.log(req.session.currentUser) */
-  /* console.log(req.params) */
+  
   res.render("auth/profileEdit", {user: req.session.currentUser})
 });
 
@@ -240,7 +218,7 @@ router.post("/profile/:id/edit", (req,res,next) => {
               User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
                 .then(updatedUser => {
                   req.session.currentUser = updatedUser;
-                  res.redirect('/auth/profile');
+                  res.redirect(`/auth/profile/${userId}`);
                 })
   
             })
@@ -251,7 +229,7 @@ router.post("/profile/:id/edit", (req,res,next) => {
           User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
             .then(updatedUser => {
               req.session.currentUser = updatedUser;
-              res.redirect('/auth/profile');
+              res.redirect(`/auth/profile/${userId}`);
             })
             .catch((error) => {
                   if (error instanceof mongoose.Error.ValidationError) {
