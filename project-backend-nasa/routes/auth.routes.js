@@ -242,10 +242,7 @@ router.post("/profile/:id/edit", (req, res, next) => {
                 req.session.currentUser = updatedUser;
                 res.redirect('/auth/profile');
               })
-
           })
-
-
 
       } else {
         User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
