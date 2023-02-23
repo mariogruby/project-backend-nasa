@@ -170,53 +170,50 @@ router.get("/logout", isLoggedIn, (req, res, next) => {
 
 // GET /auth/profile
 
-router.get("/profile", (req, res, next) => {
-  //console.log(req.session.currentUser)
-  res.render("auth/profile", { user: req.session.currentUser });
-
+router.get("/profile/:id", (req, res, next) => {
+  /* let id = req.session.currentUser._id */
   const userId = req.params.id;
-  const user = req.session.currentUser;;
+  /* const user = req.session.currentUser; */
   User.findById(userId)
-
     .then((user) => {
       Comment.find({ author: userId })
         .populate("news")
         .then(comments => {
-          // console.log("COMENTS: ", comments[0].news.title)
-          res.render("profile", { user, comments });
+          console.log("COMENTS: ", comments[0])
+          res.render("auth/profile", { user, comments });
         })
 
     })
-    .catch((err) => console.log(err));
+    /* .populate("news comments likes")
+    .populate({
+      path: "likes",
+      populate: {
+        path: "comments",
+        model: "Comment",
+        populate:{
+          path: "news",
+          model: "News"
+        }
+      }
+    })
+    .then(result => {
+      console.log(result);
+      let data = {
+        profile: result,
+        user: req.session.currentUser
+      } */
+    /*  res.render("auth/profile", data)
+   }) */
+    .catch(err => { console.log(err) })
+
 });
 
 router.get("/profile/:id/edit", (req, res, next) => {
-  const { id } = req.params;
+  /* const {id} = req.params; */
+  /*  console.log(req.session.currentUser) */
   /* console.log(req.params) */
   res.render("auth/profileEdit", { user: req.session.currentUser })
 });
-
-// router.post("/profile/:id/edit", (req, res, next) => {
-//   const userId = req.params.id
-//   const { username, email, password } = req.body;
-// console.log(req.body)
-// bcrypt
-//   .genSalt(saltRounds)
-//   .then((salt) => bcrypt.hash(password, salt))
-//   .then((hashedPassword) => {
-//     // Create a user and save it in the database
-//     User.findByIdAndUpdate(userId, { username, email, password: hashedPassword })
-//       .then(result => {
-
-//         req.session.currentUser = req.body
-//         console.log(result)
-
-//         res.redirect("/auth/profile");
-//       })
-//   })
-
-// })
-
 
 router.post("/profile/:id/edit", (req, res, next) => {
   const userId = req.params.id;
@@ -270,9 +267,7 @@ router.post("/profile/:id/edit", (req, res, next) => {
           });
       }
     })
-
-});
-
+})
 
 
 
