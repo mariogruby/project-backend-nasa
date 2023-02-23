@@ -1,15 +1,19 @@
 <h2>Profile</h2>
 
-
 <div>
-<h3> {{user.username}}</h3>
-<h4>Email:{{user.email}}</h4>
-<h4>Comments:{{user.comments}}</h4>
-<h4>News:{{user.news}}</h4>
-
+    <h3>User: {{user.username}}</h3>
+    <h4>Email:{{user.email}}</h4>
+    <h4>Comments:</h4>
+        {{#each comments}}
+            <div>
+                <p>Date: {{date}}</p>
+                <p>News: {{news.title}}</p>
+                <p>Message: {{contenido}}</p>
+            </div>
+        {{/each}}
+    
 </div>
 
-
 <form action="/profile/{{user._id}}/edit" method="get">
-<button>Edit profile</button>
+    <button>Edit profile</button>
 </form>

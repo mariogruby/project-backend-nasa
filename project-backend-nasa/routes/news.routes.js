@@ -19,11 +19,11 @@ router.get("/", isLoggedIn, (req, res, next) => {
       const newsApi = response.data
       /* console.log("DATA: ", response.data) */
       newsApi.forEach(oneNews => {
-        const { date } = oneNews
+        const { date, title } = oneNews
         News.find({ date })
           .then(result => {
             if (result.length == 0) {
-              News.create({ date })
+              News.create({ date, title })
             }
           })
 
@@ -71,14 +71,17 @@ router.post("/:date", (req, res, next) => {
   let { contenido } = req.body;
 
   if (contenido) {
-    Comment.create({ contenido, author })
-      .then(result => {
-        let comments = result._id;
+    News.findOne({date})
+    .then(result => {
+      Comment.create({ contenido, author, news: result.id })
+      .then(resolve => {
+        let comments = resolve._id;
         News.findOneAndUpdate({ date }, { $push: { comments }, author })
           .then(result => {
             res.redirect(`/news/${date}`)
           })
       })
+    })
   }
 })
 
