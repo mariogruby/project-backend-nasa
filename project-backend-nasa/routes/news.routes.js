@@ -38,7 +38,7 @@ router.get("/", isLoggedIn, (req, res, next) => {
 });
 
 
-/////cuando hacemos click a la noticia y se habre en una nueva pagina
+/////cuando hacemos click a la noticia y se habre en una nueva pagina //////
 
 router.get("/:date", (req, res, next) => {
   let { date } = req.params;
