@@ -7,8 +7,16 @@ const newSchema = new Schema(
             required: true
         },
         comments: [{
+<<<<<<< HEAD
             type: Schema.Types.ObjectId, ref: "Comment",
         }]
+=======
+            type:Schema.Types.ObjectId, ref: "Comment",
+        }],
+        title: {
+            type: String
+        }
+>>>>>>> gerard
     },
 
     {
