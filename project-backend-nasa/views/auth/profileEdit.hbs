@@ -1,0 +1,32 @@
+<h2 class="d-flex justify-content-center bg-primary border border-dark">Edit profile: {{user.name}}</h2>
+
+<form action="/auth/profile/{{user._id}}/edit" method="post">
+<div>
+  <label class="form-label"> Username:
+    <input type="text" name="username"  class="form-control"/>
+  </label>
+
+</div>
+<div>
+  <label class="form-label"> Email:
+    <input type="email" name="email" class="form-control" />
+  </label>
+
+</div>
+<div>
+  <label class="form-label"> Password:
+    <input type="password" name="password" class="form-control">
+  </label>
+
+</div>
+
+<div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3">Save changed</button>
+  </div>
+</form>
+
+
+<div class="d-flex justify-content-end">
+    <a href="/" class="btn btn-primary">Home</a>
+</div>
+

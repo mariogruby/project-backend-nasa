@@ -170,9 +170,119 @@ router.get("/logout", isLoggedIn, (req, res, next) => {
 
 // GET /auth/profile
 
-router.get("/profile", (req, res, next) => {
-  //console.log(req.session.currentUser)
-  res.render("auth/profile", { user: req.session.currentUser });
+router.get("/profile", (req,res,next) => {
+  let id = req.session.currentUser._id
+  User.findById(id)
+  .populate("news comments likes")
+  .populate({
+    path: "likes",
+    populate: {
+      path: "comments",
+      model: "Comment",
+      populate:{
+        path: "news",
+        model: "News"
+      }
+    }
+  })
+  .then(result => {
+    console.log(result);
+    let data = {
+      profile: result,
+      user: req.session.currentUser
+    }
+    res.render("auth/profile", data)
+  })
+  .catch(err => { console.log(err)})
+  
+});
+
+router.get("/profile/:id/edit", (req,res,next) => {
+  /* const {id} = req.params; */
+ /*  console.log(req.session.currentUser) */
+  /* console.log(req.params) */
+  res.render("auth/profileEdit", {user: req.session.currentUser})
+});
+
+router.post("/profile/:id/edit", (req,res,next) => {
+  const {userId} = req.params.id
+  const {username, email, password} = req.body;
+  User.findById(userId)
+    .then(user => {
+      const updateData = {};
+      if (req.body.username && req.body.username.length > 0) {
+        updateData.username = req.body.username;
+      } else {
+        updateData.username = user.username;
+      }
+      if (req.body.email && req.body.email.length > 0) {
+        updateData.email = req.body.email;
+      } else {
+        updateData.email = user.email;
+      }
+      if (req.body.password && req.body.password.length > 6) {
+        bcrypt
+        .genSalt(saltRounds)
+        .then((salt) => bcrypt.hash(password, salt))
+        .then(hashedPassword => {
+            // Update a user and save it in the database
+          User.findByIdAndUpdate(req.session.currentUser._id,{username, email, password:hashedPassword}, {new:true})
+          .then((result) => {
+            console.log(result)
+            req.session.currentUser = result
+            console.log( "Esto es current desp. de update",req.session.currentUser)
+        
+            res.redirect("/auth/profile");
+          })
+        })
+      }
+    })
+    .catch((error) => {
+      if (error instanceof mongoose.Error.ValidationError) {
+        res.status(500).render("auth/profileEdit", { errorMessage: error.message });
+      } else if (error.code === 11000) {
+        res.status(500).render("auth/profileEdit", {
+          errorMessage:
+            "Username and email need to be unique. Provide a valid username or email.",
+        });
+      } else {
+        next(error);
+      }
+    });
+});
+
+/* router.get("/pepe", (req, res, next) => {
+  let {id} = req.params;
+  User.findById({id})
+  .populate("news comments likes")
+  .populate({
+    path: "likes",
+    populate: {
+      path: "comments",
+      model: "Comment",
+      populate:{
+        path: "news",
+        model: "News"
+      }
+    }
+  })
+  .then(result => {
+    console.log(result)
+    res.render("auth/profile", result)
+  })
+  .catch(err => { console.log(err)})
+}); */
+
+/* 
+router.post("/profile", (req, res, next) => {
+  const {id} = req.params;
+  res.redirect("/auth/profile")
+}); */
+
+/* router.get("/profile/:id", (req, res, next) => {
+
+  console.log(req.session.currentUser + "AQUIIIIIIII")
+  console.log("AQUIIIIIIII")
 
   const userId = req.params.id;
   const user = req.session.currentUser;;
