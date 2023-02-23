@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const transporter = require("../config/transporter.config");
-// const templates = require("../templates/template");
+const templates = require("../templates/template");
 // ℹ️ Handles password encryption
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
@@ -71,8 +71,8 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
         from: `"NASA" <${process.env.EMAIL_ADDRESS}>`,
         to: email,
         subject: "HOLA, bienvenido a la nasa",
-        text: "message"
-        // html: templates.templateExample(message)
+        text: "message",
+       html: templates.templateExample("hola mundo")
       })
       .then((info) => res.render("message", { email, subject, message, info }))
       .catch((error) => console.log(error));
