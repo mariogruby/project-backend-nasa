@@ -45,19 +45,6 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
     return;
   }
 
-  //   ! This regular expression checks password for special characters and minimum length
-  /*
-  const regex = /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/;
-  if (!regex.test(password)) {
-    res
-      .status(400)
-      .render("auth/signup", {
-        errorMessage: "Password needs to have at least 6 chars and must contain at least one number, one lowercase and one uppercase letter."
-    });
-    return;
-  }
-  */
-
   // Create a new user - start by hashing the password
   bcrypt
     .genSalt(saltRounds)
@@ -179,44 +166,28 @@ router.get("/profile/:id", (req, res, next) => {
       Comment.find({ author: userId })
         .populate("news")
         .then(comments => {
-          console.log("COMENTS: ", comments[0])
           res.render("auth/profile", { user, comments });
         })
 
     })
-    /* .populate("news comments likes")
-    .populate({
-      path: "likes",
-      populate: {
-        path: "comments",
-        model: "Comment",
-        populate:{
-          path: "news",
-          model: "News"
-        }
-      }
-    })
-    .then(result => {
-      console.log(result);
-      let data = {
-        profile: result,
-        user: req.session.currentUser
-      } */
-    /*  res.render("auth/profile", data)
-   }) */
     .catch(err => { console.log(err) })
-
 });
 
 router.get("/profile/:id/edit", (req, res, next) => {
-  /* const {id} = req.params; */
-  /*  console.log(req.session.currentUser) */
-  /* console.log(req.params) */
-  res.render("auth/profileEdit", { user: req.session.currentUser })
+  const { id } = req.params;
+  if (req.session.currentUser._id == id || req.session.currentUser.isAdmin) {
+    res.render("auth/profileEdit", { user: req.session.currentUser })
+  }
+  else {
+    res.redirect("/news")
+  }
+
+
 });
 
 router.post("/profile/:id/edit", (req, res, next) => {
   const userId = req.params.id;
+  console.log(userId)
   const { username, email, password } = req.body;
 
   User.findById(userId)
@@ -240,15 +211,16 @@ router.post("/profile/:id/edit", (req, res, next) => {
             User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
               .then(updatedUser => {
                 req.session.currentUser = updatedUser;
-                res.redirect('/auth/profile');
+                res.redirect(`/auth/profile/${userId}`);
               })
+
           })
 
       } else {
         User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
           .then(updatedUser => {
             req.session.currentUser = updatedUser;
-            res.redirect('/auth/profile');
+            res.redirect(`/auth/profile/${userId}`);
           })
           .catch((error) => {
             if (error instanceof mongoose.Error.ValidationError) {
@@ -264,9 +236,7 @@ router.post("/profile/:id/edit", (req, res, next) => {
           });
       }
     })
+
 })
-
-
-
 
 module.exports = router;
