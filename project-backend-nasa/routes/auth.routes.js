@@ -182,7 +182,7 @@ router.get("/profile", (req, res, next) => {
       Comment.find({ author: userId })
         .populate("news")
         .then(comments => {
-          console.log("COMENTS: ", comments[0].news.title)
+          // console.log("COMENTS: ", comments[0].news.title)
           res.render("profile", { user, comments });
         })
 
