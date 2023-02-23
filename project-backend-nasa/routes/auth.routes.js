@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-
+const transporter = require("../config/transporter.config");
+const templates = require("../templates/template");
 // ℹ️ Handles password encryption
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
@@ -10,6 +11,7 @@ const saltRounds = 10;
 
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
+const Comment = require("../models/Comment.model");
 
 // Require necessary (isLoggedOut and isLiggedIn) middleware in order to control access to specific routes
 const isLoggedOut = require("../middleware/isLoggedOut");
@@ -23,6 +25,7 @@ router.get("/signup", isLoggedOut, (req, res, next) => {
 // POST /auth/signup
 router.post("/signup", isLoggedOut, (req, res, next) => {
   const { username, email, password } = req.body;
+
 
   // Check that username, email, and password are provided
   if (username === "" || email === "" || password === "") {
@@ -65,6 +68,16 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
     })
     .then((user) => {
       //nodemailer aquí
+      transporter.sendMail({
+        from: `"NASA" <${process.env.EMAIL_ADDRESS}>`,
+        to: email,
+        subject: "HOLA, bienvenido a la nasa",
+        text: "message",
+        html: templates.templateExample("hola mundo")
+      })
+        .then((info) => res.render("message", { email, subject, message, info }))
+        .catch((error) => console.log(error));
+      ///////////////////////////////
       res.redirect("/auth/login");
     })
     .catch((error) => {
@@ -161,6 +174,20 @@ router.get("/profile", (req, res, next) => {
   //console.log(req.session.currentUser)
   res.render("auth/profile", { user: req.session.currentUser });
 
+  const userId = req.params.id;
+  const user = req.session.currentUser;;
+  User.findById(userId)
+
+    .then((user) => {
+      Comment.find({ author: userId })
+        .populate("news")
+        .then(comments => {
+          console.log("COMENTS: ", comments[0].news.title)
+          res.render("profile", { user, comments });
+        })
+
+    })
+    .catch((err) => console.log(err));
 });
 
 router.get("/profile/:id/edit", (req, res, next) => {

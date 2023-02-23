@@ -19,11 +19,11 @@ router.get("/", isLoggedIn, (req, res, next) => {
       const newsApi = response.data
       /* console.log("DATA: ", response.data) */
       newsApi.forEach(oneNews => {
-        const { date } = oneNews
+        const { date, title } = oneNews
         News.find({ date })
           .then(result => {
             if (result.length == 0) {
-              News.create({ date })
+              News.create({ date, title })
             }
           })
 
@@ -40,10 +40,17 @@ router.get("/", isLoggedIn, (req, res, next) => {
 
 /////cuando hacemos click a la noticia y se habre en una nueva pagina
 
-router.get("/:date", (req, res, next) => {
+router.get("/:date", isLoggedIn, (req, res, next) => {
   let { date } = req.params;
   News.find({ date })
     .populate("comments")
+    .populate({
+      path: "comments",
+      populate: {
+        path: "author",
+        model: "User"
+      }
+    })
     .then(result => {
       nasaService.getNews(date)
         .then(response => {
@@ -51,8 +58,8 @@ router.get("/:date", (req, res, next) => {
             news: response.data,
             Newscomments: { result },
             user: req.session.currentUser
-          }
-          console.log("COMMMENTS: ", data.Newscomments)
+          }/* 
+          console.log("COMMMENTS: ", data.Newscomments.result[0].comments[3].author.username) */
           res.render("auth/newsDetail", data);
         })
     })
@@ -64,14 +71,17 @@ router.post("/:date", (req, res, next) => {
   let { contenido } = req.body;
 
   if (contenido) {
-    Comment.create({ contenido, author })
-      .then(result => {
-        let comments = result._id;
-        News.findOneAndUpdate({ date }, { $push: { comments } })
+    News.findOne({date})
+    .then(result => {
+      Comment.create({ contenido, author, news: result.id })
+      .then(resolve => {
+        let comments = resolve._id;
+        News.findOneAndUpdate({ date }, { $push: { comments }, author })
           .then(result => {
             res.redirect(`/news/${date}`)
           })
       })
+    })
   }
 })
 
