@@ -12,12 +12,10 @@
                 <p>Message: {{contenido}}</p>
             </div>
         {{/each}}
-    <h4>News:{{user.news}}</h4>
-    <h4>Likes: {{user.likes}}</h4>
 </div>
 
 
-<a href="profile/{{user._id}}/edit">Editar Profile</a>
+<a href="{{user._id}}/edit">Editar Profile</a>
 {{!-- 
 <form action="/profile/{{user._id}}/edit" method="Post">
 <button>Edit profile</button>
