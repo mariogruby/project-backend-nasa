@@ -23,12 +23,19 @@
 <div class="col-auto">
     <button type="submit" class="btn btn-primary mb-3">Save changed</button>
   </div>
+
+  {{#if errorMessage}}
+<p class="error">{{errorMessage}} </p> 
+{{/if}}
+
 </form>
 
 
 <div class="d-flex justify-content-end">
     <a href="/" class="btn btn-primary">Home</a>
 </div>
+
+
 
 {{!-- 
 <h2>Edit Movie:</h2>
