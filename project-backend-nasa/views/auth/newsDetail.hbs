@@ -7,12 +7,21 @@
         </div>
     </div>
 
-    {{#each Newscomments.result.0.comments}}
+    {{#each Newscomments.comments}}
         <div>
            <p>User: <a href="/auth/profile/">{{author.username}}</a></p>
            <p>Date: {{date}}</p>
            <p>Message: {{contenido}}</p> 
         </div>
+        {{#if canDelete}}
+        <div>
+          
+          <form action="/news/delete/{{_id}}" method="get">
+          <button type="submit">Delete</button>
+          </form>
+          
+        </div>
+        {{/if}}
     {{/each}}
 {{!-- <p>{{Newscomments.result.1.comments.0.contenido}}</p> --}}
 <div>
