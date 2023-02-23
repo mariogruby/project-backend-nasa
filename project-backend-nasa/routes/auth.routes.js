@@ -25,7 +25,7 @@ router.get("/signup", isLoggedOut, (req, res, next) => {
 // POST /auth/signup
 router.post("/signup", isLoggedOut, (req, res, next) => {
   const { username, email, password } = req.body;
-  
+
 
   // Check that username, email, and password are provided
   if (username === "" || email === "" || password === "") {
@@ -37,13 +37,13 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
     return;
   }
 
-   if (password.length < 6) {
-     res.status(400).render("auth/signup", {
-       errorMessage: "Your password needs to be at least 6 characters long.",
-     });
+  if (password.length < 6) {
+    res.status(400).render("auth/signup", {
+      errorMessage: "Your password needs to be at least 6 characters long.",
+    });
 
-     return;
-   }
+    return;
+  }
 
   //   ! This regular expression checks password for special characters and minimum length
   /*
@@ -73,11 +73,11 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
         to: email,
         subject: "HOLA, bienvenido a la nasa",
         text: "message",
-       html: templates.templateExample("hola mundo")
+        html: templates.templateExample("hola mundo")
       })
-      .then((info) => res.render("message", { email, subject, message, info }))
-      .catch((error) => console.log(error));
-    ///////////////////////////////
+        .then((info) => res.render("message", { email, subject, message, info }))
+        .catch((error) => console.log(error));
+      ///////////////////////////////
       res.redirect("/auth/login");
     })
     .catch((error) => {
@@ -101,10 +101,10 @@ router.get("/login", isLoggedOut, (req, res) => {
 
 // POST /auth/login
 router.post("/login", isLoggedOut, (req, res, next) => {
-  const { email,  password } = req.body;
+  const { email, password } = req.body;
 
   // Check that username, email, and password are provided
-  if ( email === "" || password === "") {
+  if (email === "" || password === "") {
     res.status(400).render("auth/login", {
       errorMessage:
         "All fields are mandatory. Please provide username, email and password.",
@@ -156,7 +156,7 @@ router.post("/login", isLoggedOut, (req, res, next) => {
 });
 
 // GET /auth/logout
-router.get("/logout", isLoggedIn, (req, res) => {
+router.get("/logout", isLoggedIn, (req, res, next) => {
   req.session.destroy((err) => {
     if (err) {
       res.status(500).render("auth/logout", { errorMessage: err.message });
@@ -166,41 +166,99 @@ router.get("/logout", isLoggedIn, (req, res) => {
     res.redirect("/auth/login");
   });
 });
+//Perfil
 
+// GET /auth/profile
 
-router.get("/user/:id", (req, res, next) => {
-
-  console.log(req.session.currentUser + "AQUIIIIIIII")
-  console.log("AQUIIIIIIII")
-
-  const userId = req.params.id;
-  const user = req.session.currentUser;;
-  User.findById(userId)
-
-    .then((user) => {
-      Comment.find({author: userId})
-      .populate("news")
-      .then(comments => {
-        // console.log("COMENTS: ", comments[0].news.title)
-        res.render("profile", { user, comments });
-      })
-      
-    })
-    .catch((err) => console.log(err));
+router.get("/profile", (req,res,next) => {
+  let id = req.session.currentUser._id
+  User.findById(id)
+  .populate("news comments likes")
+  .populate({
+    path: "likes",
+    populate: {
+      path: "comments",
+      model: "Comment",
+      populate:{
+        path: "news",
+        model: "News"
+      }
+    }
+  })
+  .then(result => {
+    console.log(result);
+    let data = {
+      profile: result,
+      user: req.session.currentUser
+    }
+    res.render("auth/profile", data)
+  })
+  .catch(err => { console.log(err)})
+  
 });
 
-// router.post("/edit/:id", (req, res, next) => {
-//     let { Name, email } = req.body;
-//     let id = req.curranteUser.id
-//     let editedProfile = { name, email, }
-//     User.findOneAndUpdate({ _id: id }, editedProfile, { new: true })
-//         .then((data) => {
-//             res.redirect("/profile/:id")
-//         })
-//         .catch((err) => {
-//             console.log(err)
-//         })
-// })
+router.get("/profile/:id/edit", (req,res,next) => {
+  /* const {id} = req.params; */
+ /*  console.log(req.session.currentUser) */
+  /* console.log(req.params) */
+  res.render("auth/profileEdit", {user: req.session.currentUser})
+});
+
+router.post("/profile/:id/edit", (req,res,next) => {
+    const userId = req.params.id;
+    const { username, email, password } = req.body;
+  
+    User.findById(userId)
+      .then(user => {
+        const updateData = {};
+        if (req.body.username && req.body.username.length > 0) {
+          updateData.username = req.body.username;
+        } else {
+          updateData.username = user.username;
+        }
+        if (req.body.email && req.body.email.length > 0) {
+          updateData.email = req.body.email;
+        } else {
+          updateData.email = user.email;
+        }
+        if (req.body.password && req.body.password.length > 6) {
+          bcrypt.genSalt(saltRounds)
+            .then(salt => bcrypt.hash(password, salt))
+            .then(hashedPassword => {
+              updateData.password = hashedPassword;
+              User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
+                .then(updatedUser => {
+                  req.session.currentUser = updatedUser;
+                  res.redirect('/auth/profile');
+                })
+  
+            })
+  
+  
+  
+        } else {
+          User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
+            .then(updatedUser => {
+              req.session.currentUser = updatedUser;
+              res.redirect('/auth/profile');
+            })
+            .catch((error) => {
+                  if (error instanceof mongoose.Error.ValidationError) {
+                    res.status(500).render("auth/profileEdit", { errorMessage: error.message });
+                  } else if (error.code === 11000) {
+                    res.status(500).render("auth/profileEdit", {
+                      errorMessage:
+                        "Username and email need to be unique. Provide a valid username or email.",
+                    });
+                  } else {
+                    next(error);
+                  }
+            });
+          }
+        })
+      })
+
+
 
 
 module.exports = router;
