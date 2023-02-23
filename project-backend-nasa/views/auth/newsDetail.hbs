@@ -7,9 +7,9 @@
         </div>
     </div>
 
-    {{#each Newscomments.result.0.comments}}
+    {{#each Newscomments.comments}}
         <div>
-           <p>User: <a href="/auth/profile/">{{author.username}}</a></p>
+           <p>User: <a href="/auth/profile/{{author.id}}">{{author.username}}</a></p>
            <p>Date: {{date}}</p>
            <p>Message: {{contenido}}</p> 
         </div>

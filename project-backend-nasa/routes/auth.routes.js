@@ -170,10 +170,21 @@ router.get("/logout", isLoggedIn, (req, res, next) => {
 
 // GET /auth/profile
 
-router.get("/profile", (req,res,next) => {
-  let id = req.session.currentUser._id
-  User.findById(id)
-  .populate("news comments likes")
+router.get("/profile/:id", (req,res,next) => {
+  /* let id = req.session.currentUser._id */
+  const userId = req.params.id;
+  /* const user = req.session.currentUser; */
+  User.findById(userId)
+  .then((user) => {
+    Comment.find({author: userId})
+    .populate("news")
+    .then(comments => {
+      console.log("COMENTS: ", comments[0])
+      res.render("auth/profile", { user, comments });
+    })
+    
+  })
+  /* .populate("news comments likes")
   .populate({
     path: "likes",
     populate: {
@@ -190,9 +201,9 @@ router.get("/profile", (req,res,next) => {
     let data = {
       profile: result,
       user: req.session.currentUser
-    }
-    res.render("auth/profile", data)
-  })
+    } */
+   /*  res.render("auth/profile", data)
+  }) */
   .catch(err => { console.log(err)})
   
 });

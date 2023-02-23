@@ -8,7 +8,10 @@ const newSchema = new Schema(
         },
         comments: [{
             type: Schema.Types.ObjectId, ref: "Comment",
-        }]
+        }],
+        title: {
+            type: String
+        }
     },
 
     {

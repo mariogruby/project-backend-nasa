@@ -17,7 +17,6 @@ router.get("/", isLoggedIn, (req, res, next) => {
   nasaService.listNews()
     .then(response => {
       const newsApi = response.data
-      /* console.log("DATA: ", response.data) */
       newsApi.forEach(oneNews => {
         const { date, title } = oneNews
         News.find({ date })
@@ -42,7 +41,7 @@ router.get("/", isLoggedIn, (req, res, next) => {
 
 router.get("/:date", isLoggedIn, (req, res, next) => {
   let { date } = req.params;
-  News.find({ date })
+  News.findOne({ date })
     .populate("comments")
     .populate({
       path: "comments",
@@ -56,10 +55,9 @@ router.get("/:date", isLoggedIn, (req, res, next) => {
         .then(response => {
           let data = {
             news: response.data,
-            Newscomments: { result },
+            Newscomments: result,
             user: req.session.currentUser
-          }/* 
-          console.log("COMMMENTS: ", data.Newscomments.result[0].comments[3].author.username) */
+          }
           res.render("auth/newsDetail", data);
         })
     })
@@ -76,8 +74,9 @@ router.post("/:date", (req, res, next) => {
       Comment.create({ contenido, author, news: result.id })
       .then(resolve => {
         let comments = resolve._id;
-        News.findOneAndUpdate({ date }, { $push: { comments }, author })
+        News.findOneAndUpdate({ date }, { $push: { comments } })
           .then(result => {
+
             res.redirect(`/news/${date}`)
           })
       })
