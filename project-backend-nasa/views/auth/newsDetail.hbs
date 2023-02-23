@@ -9,7 +9,9 @@
 
     {{#each Newscomments.result.0.comments}}
         <div>
-           <p>{{contenido}}</p> 
+           <p>User: <a href="/auth/user/{{author.id}}">{{author.username}}</a></p>
+           <p>Date: {{date}}</p>
+           <p>Message: {{contenido}}</p> 
         </div>
     {{/each}}
 {{!-- <p>{{Newscomments.result.1.comments.0.contenido}}</p> --}}

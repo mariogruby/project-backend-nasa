@@ -13,6 +13,9 @@ const commentSchema = new Schema(
         },
         author: {
             type: Schema.Types.ObjectId, ref: "User",
+        },
+        news: {
+            type: Schema.Types.ObjectId, ref: "News",
         }
     },
     {

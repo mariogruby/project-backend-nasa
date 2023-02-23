@@ -11,6 +11,7 @@ const saltRounds = 10;
 
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
+const Comment = require("../models/Comment.model");
 
 // Require necessary (isLoggedOut and isLiggedIn) middleware in order to control access to specific routes
 const isLoggedOut = require("../middleware/isLoggedOut");
@@ -36,13 +37,13 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
     return;
   }
 
-  if (password.length < 6) {
-    res.status(400).render("auth/signup", {
-      errorMessage: "Your password needs to be at least 6 characters long.",
-    });
+   if (password.length < 6) {
+     res.status(400).render("auth/signup", {
+       errorMessage: "Your password needs to be at least 6 characters long.",
+     });
 
-    return;
-  }
+     return;
+   }
 
   //   ! This regular expression checks password for special characters and minimum length
   /*
@@ -100,10 +101,10 @@ router.get("/login", isLoggedOut, (req, res) => {
 
 // POST /auth/login
 router.post("/login", isLoggedOut, (req, res, next) => {
-  const { email, password } = req.body;
+  const { email,  password } = req.body;
 
   // Check that username, email, and password are provided
-  if (email === "" || password === "") {
+  if ( email === "" || password === "") {
     res.status(400).render("auth/login", {
       errorMessage:
         "All fields are mandatory. Please provide username, email and password.",
@@ -166,6 +167,7 @@ router.get("/logout", isLoggedIn, (req, res) => {
   });
 });
 
+
 router.get("/user/:id", (req, res, next) => {
 
   console.log(req.session.currentUser + "AQUIIIIIIII")
@@ -176,7 +178,13 @@ router.get("/user/:id", (req, res, next) => {
   User.findById(userId)
 
     .then((user) => {
-      res.render("profile", { user });
+      Comment.find({author: userId})
+      .populate("news")
+      .then(comments => {
+        console.log("COMENTS: ", comments[0].news.title)
+        res.render("profile", { user, comments });
+      })
+      
     })
     .catch((err) => console.log(err));
 });
@@ -193,7 +201,6 @@ router.get("/user/:id", (req, res, next) => {
 //             console.log(err)
 //         })
 // })
-
 
 
 module.exports = router;
