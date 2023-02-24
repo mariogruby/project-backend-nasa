@@ -10,13 +10,14 @@ a {
 h1 {
   color: 15px;
 } */
-video {
+/* video {
   position: fixed;
   left: 0;
   top: 0;
   height:100%;
   z-index: -1;
-}
+  height:1200px;
+} */
 #imgsize{
   width: 300px;
   height: 300px;
@@ -30,8 +31,9 @@ video {
 
 }
   
-
-
+body {
+  background-color: #f8f8f8;
+}
 .card:hover{
 
   box-shadow: 5px 6px 6px 2px #e9ecef;
@@ -43,5 +45,28 @@ video {
 }
 
 .pagination{
-  justify-content: center;
+  justify-content:center
 }
+#date-margin1{
+  text-align: left;
+  margin-left:1em;
+}
+#text-title1{
+  text-align: left;
+  margin-left:0.5em;
+  margin-bottom: 0.5em;
+}
+#textcontent1{
+  margin-left: 1em;
+  margin-right: 1em;
+  margin-bottom: 0.5em;
+}
+.form-control{
+  /* padding-right:27em; */
+  width:38vw;
+  display: flex;
+  
+}
+/* #textolugar{
+  text-align:left;
+} */

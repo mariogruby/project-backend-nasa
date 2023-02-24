@@ -179,22 +179,28 @@ router.get("/profile/:id", (req,res,next) => {
     Comment.find({author: userId})
     .populate("news")
     .then(comments => {
-      console.log("COMENTS: ", comments[0])
       res.render("auth/profile", { user, comments });
     })
     
   })
   .catch(err => { console.log(err)})
-  
 });
 
 router.get("/profile/:id/edit", (req,res,next) => {
+  const {id} = req.params;
+  if (req.session.currentUser._id == id || req.session.currentUser.isAdmin){
+    res.render("auth/profileEdit", {user: req.session.currentUser})
+  }
+  else  {
+    res.redirect("/news")
+  }
+
   
-  res.render("auth/profileEdit", {user: req.session.currentUser})
 });
 
 router.post("/profile/:id/edit", (req,res,next) => {
     const userId = req.params.id;
+    console.log(userId)
     const { username, email, password } = req.body;
   
     User.findById(userId)
