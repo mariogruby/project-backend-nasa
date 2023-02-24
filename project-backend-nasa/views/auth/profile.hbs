@@ -1,18 +1,55 @@
-<h2>Profile</h2>
+<h1 class="text-center">Profile</h1>
+<div class="container mt-5">
+      <div class="row d-flex justify-content-center">
+        <div class="col-md-7">
+            <div class="card p-3 py-4">
+                <div class="text-center">
+                    <img src="http://www.4x4.ec/overlandecuador/wp-content/uploads/2017/06/default-user-icon-8.jpg" width="100" class="rounded-circle">
+                </div>
 
 
-<div>
-<h3> {{user.username}}</h3>
-<h4>Email:{{user.email}}</h4>
-<h4>Comments:{{user.comments}}</h4>
-<h4>News:{{user.news}}</h4>
-<h4>Likes: {{user.likes}}</h4>
-
+<div class="text-center mt-3">
+    <span class="bg-secondary p-1 px-4 rounded text-white">User</span>
+<h3 class="mt-2 mb-0"> <i class="fa-regular fa-user"></i> {{user.username}}</h3>
+<h4><i class="fa-regular fa-envelope"></i> {{user.email}}</h4>
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0" id="textolugar">
+            <a class="btn-btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    <i class="fa-regular fa-comments"></i>
+                    Comments
+            </a>
+            </h2>
+            </div>
+                    <div id="collapseOne"class="collapse"aria-labelledby="headingOne"data-parent="#accordionExample">
+                            <div class="card-body">
+                                
+                                    {{#each comments}}
+                                    <div> 
+                                            <p><i class="fa-solid fa-bookmark"></i> {{news.title}}</p>
+                                            <p><i class="fa-solid fa-clock"></i> {{date}}</p>
+                                            <p><i class="fa-solid fa-comment"></i> {{contenido}}</p>
+                                            ______________________________________________________________________________________________________
+                                    </div>
+                                    {{/each}}
+                            </div>
+                    </div>
+        </div>
+    </div>
 </div>
+{{!-- <h4>News:{{user.news}}</h4>
+<h4>Likes: {{user.likes}}</h4> --}}
 
 
-<a href="profile/{{user._id}}/edit">Editar Profile</a>
+
+
+<a href="{{user._id}}/edit"><i class="fa-solid fa-user-pen"></i></a>
+            </div>
 {{!-- 
 <form action="/profile/{{user._id}}/edit" method="Post">
 <button>Edit profile</button>
 </form> --}}
+
+<script src="https://kit.fontawesome.com/c961c96d7d.js" crossorigin="anonymous"></script>
