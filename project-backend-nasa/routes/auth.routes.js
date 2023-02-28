@@ -71,9 +71,9 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
       transporter.sendMail({
         from: `"NASA" <${process.env.EMAIL_ADDRESS}>`,
         to: email,
-        subject: "HOLA, bienvenido a la nasa",
+        subject: "HOLA, bienvenido a la nasa, te haz registrado con exito",
         text: "message",
-        html: templates.templateExample("hola mundo")
+        // html: templates.templateExample("hola mundo")
       })
         .then((info) => res.render("message", { email, subject, message, info }))
         .catch((error) => console.log(error));
