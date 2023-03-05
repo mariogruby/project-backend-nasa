@@ -169,8 +169,11 @@ router.get("/logout", isLoggedIn, (req, res, next) => {
 //Perfil
 
 // GET /auth/profile
+router.get("/profile", isLoggedIn, (req,res,next) => {
+  res.redirect(`/auth/profile/${req.session.currentUser._id}`)
+})
 
-router.get("/profile/:id", (req,res,next) => {
+router.get("/profile/:id", isLoggedIn, (req,res,next) => {
   /* let id = req.session.currentUser._id */
   const userId = req.params.id;
   /* const user = req.session.currentUser; */
@@ -186,23 +189,20 @@ router.get("/profile/:id", (req,res,next) => {
   .catch(err => { console.log(err)})
 });
 
-router.get("/profile/:id/edit", (req,res,next) => {
+router.get("/profile/:id/edit",isLoggedIn, (req,res,next) => {
   const {id} = req.params;
-  if (req.session.currentUser._id == id || req.session.currentUser.isAdmin){
+  if (req.session.currentUser._id == id){
     res.render("auth/profileEdit", {user: req.session.currentUser})
   }
-  else  {
-    res.redirect("/news")
-  }
-
+  else res.redirect(`/auth/profile/${id}`)
   
 });
 
-router.post("/profile/:id/edit", (req,res,next) => {
+router.post("/profile/:id/edit",isLoggedIn, (req,res,next) => {
     const userId = req.params.id;
     console.log(userId)
     const { username, email, password } = req.body;
-  
+
     User.findById(userId)
       .then(user => {
         const updateData = {};
@@ -227,9 +227,7 @@ router.post("/profile/:id/edit", (req,res,next) => {
                   res.redirect(`/auth/profile/${userId}`);
                 })
   
-            })
-  
-  
+            })  
   
         } else {
           User.findByIdAndUpdate(userId, { $set: updateData }, { new: true })
@@ -253,7 +251,49 @@ router.post("/profile/:id/edit", (req,res,next) => {
         })
       })
 
+router.get("/profile/:id/edit/comment",isLoggedIn, (req,res,next) => {
+  const {id} = req.params;
+  User.findById(id)
+  .then(elem => {
+    Comment.find({author:id})
+    .populate("author news")
+    .then(result => {
+      if (req.session.currentUser._id == id){
+        res.render("auth/commentsProfileEdit", {result})
+      }
+      else res.redirect(`/auth/profile/${id}`)
 
+    })
+  })
+  
+});
+
+
+router.post("/profile/:id/edit/comment", isLoggedIn, (req,res,next) => {
+  const {id} = req.params;
+  const {commentMod} = req.body;
+  if(commentMod && commentMod.length > 0){
+    Comment.findByIdAndUpdate(id, {contenido:commentMod},{new:true})
+    .then(result => {
+      console.log(result)
+      req.session.currentUser.comments.push(result)
+      res.redirect(`/auth/profile/${req.session.currentUser._id}`)
+    })
+  }
+  /* User.findById(id)
+  .then(result => {
+    let updateComments = [];
+    if(commentss && commentss.length > 0) updateComments.push(commentss)
+    Comment.findByIdAndUpdate(id, { $set: updateComments[0] }, { new: true })
+    .then(updatedUser => {
+      
+      req.session.currentUser.comments = updateComments;
+      
+      res.redirect(`/auth/profile/${id}`)
+    })
+  }) */
+  
+});
 
 
 module.exports = router;
