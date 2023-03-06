@@ -11,13 +11,12 @@ const nasaService = require("../services/nasa.service");
 const User = require("../models/User.model");
 const Comment = require("../models/Comment.model");
 const News = require("../models/News.model");
-const { populate } = require('../models/User.model');
 
 //AQUI LA RUTA NEWS
 router.get("/", isLoggedIn, (req, res, next) => {
   nasaService.listNews()
     .then(response => {
-      const newsApi = response.data
+      const newsApi = response.data.reverse()
       newsApi.forEach(oneNews => {
         const { date, title } = oneNews
         News.find({ date })
