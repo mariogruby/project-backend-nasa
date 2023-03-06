@@ -17,7 +17,7 @@ const { populate } = require('../models/User.model');
 router.get("/", isLoggedIn, (req, res, next) => {
   nasaService.listNews()
     .then(response => {
-      const newsApi = response.data
+      const newsApi = response.data.reverse()
       newsApi.forEach(oneNews => {
         const { date, title } = oneNews
         News.find({ date })
