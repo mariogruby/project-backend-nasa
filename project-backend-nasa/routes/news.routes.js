@@ -77,8 +77,7 @@ router.get("/:date", isLoggedIn, (req, res, next) => {
       let comments = [];
       result.comments.forEach(comment => {
         let commentAux = comment
-        console.log(comment)
-        if (req.session.currentUser._id == comment.author._id || req.session.currentUser.isAdmin){
+        if (req.session.currentUser.username == comment.author.username || req.session.currentUser.isAdmin === true){
           commentAux.canDelete = true
           commentAux.canEdit = true
         }
