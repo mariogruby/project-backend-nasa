@@ -11,6 +11,7 @@ const nasaService = require("../services/nasa.service");
 const User = require("../models/User.model");
 const Comment = require("../models/Comment.model");
 const News = require("../models/News.model");
+const { populate } = require('../models/User.model');
 
 //AQUI LA RUTA NEWS
 router.get("/", isLoggedIn, (req, res, next) => {
@@ -48,6 +49,18 @@ router.get("/", isLoggedIn, (req, res, next) => {
     .catch((err) => console.log(err))
   })
 
+  router.post("/edit/:id", (req,res,next) => {
+    let _id = req.params.id;
+    let { contenido } = req.body;
+    console.log(contenido)
+    Comment.findOneAndUpdate({_id}, {contenido})
+    .populate("news")
+    .then(result => {
+      res.redirect(`/news/${result.news.date}`)
+    })
+    .catch((err) => console.log(err))
+  })
+
 router.get("/:date", isLoggedIn, (req, res, next) => {
   let { date } = req.params;
   News.findOne({ date })
@@ -67,6 +80,7 @@ router.get("/:date", isLoggedIn, (req, res, next) => {
         let commentAux = comment
         if (req.session.currentUser.username == comment.author.username || req.session.currentUser.isAdmin === true){
           commentAux.canDelete = true
+          commentAux.canEdit = true
         }
         comments.push(comment)
           })
