@@ -1,0 +1,28 @@
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Notice title</th>
+      <th scope="col">Date of notice</th>
+      <th scope="col">Author</th>
+      <th scope="col">Date</th>
+      <th scope="col">Comment</th>
+      <th scope="col">Submit</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    {{#result}}
+    <tr>
+      <th scope="row"></th>
+      <form action="/auth/profile/{{_id}}/edit/comment" method="post">
+      <td>{{news.title}}</td>
+      <td>{{news.date}}</td>
+      <td>{{author.username}}</td>
+      <td class="inline-block text-truncate" style="max-width: 150px;">{{date}}</td>
+      <td><textarea class="form-control" name="commentMod" id="exampleFormControlTextarea1"></textarea></td>
+      <td><button class="btn btn-primary" type="submit">Submit</button></td>
+      </form>
+    </tr>
+    {{/result}}
+  </tbody>
+</table>

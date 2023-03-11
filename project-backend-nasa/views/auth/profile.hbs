@@ -30,11 +30,12 @@
                                 <div class="card-body">
 
                                     {{#each comments}}
-                                    <div>
-                                        <p><i class="fa-solid fa-bookmark"></i> {{news.title}}</p>
-                                        <p><i class="fa-solid fa-clock"></i> {{date}}</p>
-                                        <p><i class="fa-solid fa-comment"></i> {{contenido}}</p>
-                                        ______________________________________________________________________________________________________
+                                    <div> 
+                                            <p><i class="fa-solid fa-bookmark"></i> {{news.title}}</p>
+                                            <p><i class="fa-solid fa-clock"></i> {{date}}</p>
+                                            <p><i class="fa-solid fa-comment"></i> {{contenido}}</p>
+                                            <a href="{{author._id}}/edit/comment"><i class="fa-sharp fa-solid fa-comments"></i></a>
+                                            ______________________________________________________________________________________________________
                                     </div>
                                     {{/each}}
                                 </div>
@@ -46,13 +47,12 @@
                 <h4>Likes: {{user.likes}}</h4> --}}
 
 
-
-
-                <a href="{{user._id}}/edit"><i class="fa-solid fa-user-pen"></i></a>
+<a href="{{user._id}}/edit"><i class="fa-solid fa-user-pen"></i></a>
             </div>
-            {{!--
-            <form action="/profile/{{user._id}}/edit" method="Post">
-                <button>Edit profile</button>
-            </form> --}}
+        
+{{!-- 
+<form action="/profile/{{user._id}}/edit" method="Post">
+<button>Edit profile</button>
+</form> --}}
 
             <script src="https://kit.fontawesome.com/c961c96d7d.js" crossorigin="anonymous"></script>
