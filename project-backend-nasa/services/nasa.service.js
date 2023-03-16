@@ -5,7 +5,7 @@ class NasaAPI {
         this.BASE_URL = process.env.API_URL;
     }
     listNews() { 
-        return axios.get(`${this.BASE_URL}&start_date=2023-01-01&end_date=2023-01-12`);
+        return axios.get(`${this.BASE_URL}&start_date=2023-01-01`);
     }
     getNews(date) {
         return axios.get(`${this.BASE_URL}&date=${date}`);
