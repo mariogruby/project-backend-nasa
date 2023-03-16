@@ -7,31 +7,6 @@
   </div>
 </div>
 
-<<<<<<< HEAD
-{{#each Newscomments.comments}}
-<section style="background-color: #f8f8f8;">
-  <div class="container my-2 py-2 text-dark">
-    <div class="row d-flex justify-content-center">
-      <div class="col-md-11 col-lg-9 col-xl-7">
-        <div class="d-flex flex-start mb-1">
-          <div class="card w-100">
-            <div class="card-body p-3">
-              <div class="">
-                <h3 class="mt-2 mb-0"> <i class="fa-regular fa-user"></i> <a
-                    href="/auth/profile/{{author.id}}">{{author.username}}</a></h3>
-                <p class="small"><i class="fa-regular fa-clock"></i> {{date}}</p>
-                <p> {{contenido}}</p>
-              </div>
-              {{#if canDelete}}
-              <div>
-
-                <form action="/news/delete/{{_id}}" method="get">
-                  <a href="/news/delete/{{_id}}"><i class="fa-regular fa-trash-can" type="submit"></i></a>
-                </form>
-
-              </div>
-              {{/if}}
-=======
     {{#each Newscomments.comments}}
  <section style="background-color: #f8f8f8;">
     <div class="container my-2 py-2 text-dark">
@@ -67,7 +42,6 @@
                         </div>
                     </div>
                 </div>
->>>>>>> daa5b83fbae5e958200c552057d3f56f23a86711
             </div>
           </div>
         </div>
