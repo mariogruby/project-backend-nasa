@@ -1,13 +1,18 @@
 const express = require('express');
 const isLoggedIn = require('../middleware/isLoggedIn');
 const router = express.Router();
+
 const mongoose = require("mongoose");
+
 //Nasa API
 const nasaService = require("../services/nasa.service");
+
 //modelos
 const User = require("../models/User.model");
 const Comment = require("../models/Comment.model");
 const News = require("../models/News.model");
+const { populate } = require('../models/User.model');
+
 //AQUI LA RUTA NEWS
 router.get("/", isLoggedIn, (req, res, next) => {
   nasaService.listNews()
@@ -21,6 +26,7 @@ router.get("/", isLoggedIn, (req, res, next) => {
               News.create({ date, title })
             }
           })
+
       });
       let data = {
         news: response.data,
@@ -38,9 +44,23 @@ router.get("/", isLoggedIn, (req, res, next) => {
     Comment.findByIdAndDelete(id)
     .then(() => {
       res.redirect(`/news`)
+
     })
     .catch((err) => console.log(err))
   })
+
+  router.post("/edit/:id", (req,res,next) => {
+    let _id = req.params.id;
+    let { contenido } = req.body;
+    console.log(contenido)
+    Comment.findOneAndUpdate({_id}, {contenido})
+    .populate("news")
+    .then(result => {
+      res.redirect(`/news/${result.news.date}`)
+    })
+    .catch((err) => console.log(err))
+  })
+
 router.get("/:date", isLoggedIn, (req, res, next) => {
   let { date } = req.params;
   News.findOne({ date })
@@ -58,9 +78,10 @@ router.get("/:date", isLoggedIn, (req, res, next) => {
       let comments = [];
       result.comments.forEach(comment => {
         let commentAux = comment
-        
-        if (req.session.currentUser.username == comment.author.username || req.session.currentUser.isAdmin === true){
+        console.log(comment)
+        if (req.session.currentUser._id == comment.author._id || req.session.currentUser.isAdmin){
           commentAux.canDelete = true
+          commentAux.canEdit = true
         }
         comments.push(comment)
           })
@@ -77,10 +98,12 @@ router.get("/:date", isLoggedIn, (req, res, next) => {
         })
     })
 })
+
 router.post("/:date", (req, res, next) => {
   let { date } = req.params;
   let author = req.session.currentUser._id;
   let { contenido } = req.body;
+
   if (contenido) {
     News.findOne({date})
     .then(result => {
@@ -89,10 +112,14 @@ router.post("/:date", (req, res, next) => {
         let comments = resolve._id;
         News.findOneAndUpdate({ date }, { $push: { comments } })
           .then(result => {
+
             res.redirect(`/news/${date}`)
           })
       })
     })
   }
+
 })
+
+
 module.exports = router
