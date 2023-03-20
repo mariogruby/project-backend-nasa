@@ -11,26 +11,25 @@
 
 <form action="/auth/profile/{{user._id}}/edit" method="post">
 <div>
-  <label class="form-label"> Username:
+  <label class="form-label"> Username:</label>
     <input type="text" name="username"  class="form-control"/>
-  </label>
+  
 
 </div>
 <div>
-  <label class="form-label"> Email:
+  <label class="form-label"> Email:</label>
     <input type="email" name="email" class="form-control" />
-  </label>
 
 </div>
 <div>
-  <label class="form-label"> Password:
+  <label class="form-label"> Password:</label>
     <input type="password" name="password" class="form-control">
-  </label>
+  
 
 </div>
 
-<div class="col-auto">
-    <button type="submit" class="btn btn-primary mb-3">Save changed</button>
+<div class="d-flex mb-3 mt-3 justify-content-center">
+    <button type="submit" class="btn btn-primary">Save changed</button>
 </div>
 
 {{#if errorMessage}}
@@ -39,7 +38,7 @@
 </form>
 
 
-<div class="d-flex justify-content-end">
+<div class="d-flex justify-content-center">
     <a href="/" class="btn btn-primary">Home</a>
 </div>
 
