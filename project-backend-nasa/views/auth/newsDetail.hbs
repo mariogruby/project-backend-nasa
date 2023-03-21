@@ -28,16 +28,30 @@
                 </form>
               </div>
               {{/if}}
+
+
               {{#if canEdit}}
-              <h5>Edit comment</h5>
-              <div class="form-outline">
-                <form action="/news/edit/{{_id}}" method="post">
-                  <label class="form-label" for="textAreaExample"></label>
-                    <textarea class="form-control" id="textAreaExample" type="textarea" name="contenido"
-                      rows="4"></textarea>
-                  <div class="d-flex justify-content-between mt-3">
-                    <button type="submit" class="btn btn-danger">Edit  <i class="fa-solid fa-pen"></i></button>
-                </form>
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button-collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">Edit
+                      comment</button>
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                    <div class="form-outline">
+                      <form action="/news/edit/{{_id}}" method="post">
+                        <label class="form-label" for="textAreaExample"></label>
+                        <textarea class="form-control" id="textAreaExample" type="textarea" name="contenido"
+                          rows="4"></textarea>
+                        <div class="d-flex justify-content-between mt-3">
+                          <button type="submit" class="btn btn-danger">Edit <i class="fa-solid fa-pen"></i></button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
               </div>
               {{/if}}
             </div>
@@ -72,8 +86,8 @@
               <div class="form-outline">
                 <form action="/news/{{news.date}}" method="post">
                   <label class="form-label" for="textAreaExample"></label>
-                    <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
-                      rows="4"></textarea>
+                  <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
+                    rows="4"></textarea>
                   <div class="d-flex justify-content-between mt-3">
                     <button type="submit" class="btn btn-danger">Send<i
                         class="fas fa-long-arrow-alt-right ms-1"></i></button>
@@ -109,7 +123,7 @@
 <script src="https://kit.fontawesome.com/c961c96d7d.js" crossorigin="anonymous"></script>
 
 {{!-- <form action="/news/{{news.date}}" method="post">
-                  <label class="form-label" for="textAreaExample">
-                    <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
-                      rows="4"></textarea>
-                  </label> --}}
+  <label class="form-label" for="textAreaExample">
+    <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
+      rows="4"></textarea>
+  </label> --}}
