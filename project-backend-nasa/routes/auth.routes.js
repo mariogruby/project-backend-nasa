@@ -68,15 +68,15 @@ router.post("/signup", isLoggedOut, (req, res, next) => {
     })
     .then((user) => {
       //nodemailer aquí
-      transporter.sendMail({
-        from: `"NASA" <${process.env.EMAIL_ADDRESS}>`,
-        to: email,
-        subject: "HOLA, bienvenido a la nasa",
-        text: "message",
-        html: templates.templateExample("hola mundo")
-      })
-        .then((info) => res.render("message", { email, subject, message, info }))
-        .catch((error) => console.log(error));
+      // transporter.sendMail({
+      //   from: `"NASA" <${process.env.EMAIL_ADDRESS}>`,
+      //   to: email,
+      //   subject: "HOLA, bienvenido a la nasa, te haz registrado con exito",
+      //   text: "message",
+      //   // html: templates.templateExample("hola mundo")
+      // })
+      //   .then((info) => res.render("message", { email, subject, message, info }))
+      //   .catch((error) => console.log(error));
       ///////////////////////////////
       res.redirect("/auth/login");
     })

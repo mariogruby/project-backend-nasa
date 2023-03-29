@@ -1,86 +1,91 @@
 <div>
-        <p class="h4" id="date-margin1">{{news.date}}</p>
-        <h1 class="card-title" id="text-title1">{{news.title}}</h1>
-        <div class="clearfix">
-        <img src={{news.url}}  class="img-fluid rounded mx-auto d-flex" id="img-id-config" alt="nasa">
-        <p class="text-left lead mp-auto d-flex" id="textcontent1">{{news.explanation}}</p>
-        </div>
-    </div>
+  <p class="h4" id="date-margin1">{{news.date}}</p>
+  <h1 class="card-title" id="text-title1">{{news.title}}</h1>
+  <div class="clearfix">
+    <img src={{news.url}} class="img-fluid rounded mx-auto d-flex" id="img-id-config" alt="nasa">
+    <p class="text-left lead mp-auto d-flex" id="textcontent1">{{news.explanation}}</p>
+  </div>
+</div>
 
-    {{#each Newscomments.comments}}
- <section style="background-color: #f8f8f8;">
-    <div class="container my-2 py-2 text-dark">
-        <div class="row d-flex justify-content-center">
-            <div class="col-md-11 col-lg-9 col-xl-7">
-                <div class="d-flex flex-start mb-1">
-                    <div class="card w-100">
-                        <div class="card-body p-3">
-                            <div class="">
-                                <h3 class="mt-2 mb-0"> <i class="fa-regular fa-user"></i> <a href="/auth/profile/{{author.id}}">{{author.username}}</a></h3>
-                                <p class ="small"><i class="fa-regular fa-clock"></i> {{date}}</p>
-                                <p> {{contenido}}</p> 
-                            </div>
-                             {{#if canDelete}}
-                                <div>
-                                    <form action="/news/delete/{{_id}}" method="get">
-                                    <a href= "/news/delete/{{_id}}"><i class="fa-regular fa-trash-can" type="submit"></i></a>
-                                    </form>
-                                </div>
-                            {{/if}}
-                            {{#if canEdit}}
-                                <h5>Edit comment</h5>
-                                <div class="form-outline">
-                                    <form action="/news/edit/{{_id}}" method="post">
-                                        <label class="form-label" for="textAreaExample">
-                                        <textarea class="form-control" id="textAreaExample"type="textarea" name="contenido" rows="4"></textarea>
-                                        </label>
-                                        <div class="d-flex justify-content-between mt-3">
-                                        <button type="submit" class="btn btn-danger">Edit<i class="fa-solid fa-pen"></i></button>
-                                    </form>
-                                </div>
-                            {{/if}}
-                        </div>
-                    </div>
-                </div>
+{{#each Newscomments.comments}}
+<section style="background-color: #f8f8f8;">
+  <div class="container my-2 py-2 text-dark">
+    <div class="row d-flex justify-content-center">
+      <div class="col-md-11 col-lg-9 col-xl-7">
+        <div class="d-flex flex-start mb-1">
+          <div class="card w-100">
+            <div class="card-body p-3">
+              <div class="">
+                <h3 class="mt-2 mb-0"> <i class="fa-regular fa-user"></i> <a
+                    href="/auth/profile/{{author.id}}">{{author.username}}</a></h3>
+                <p class="small"><i class="fa-regular fa-clock"></i> {{date}}</p>
+                <p> {{contenido}}</p>
+              </div>
+              {{#if canDelete}}
+              <div>
+                <form action="/news/delete/{{_id}}" method="get">
+                  <a href="/news/delete/{{_id}}"><i class="fa-regular fa-trash-can" type="submit"></i></a>
+                </form>
+              </div>
+              {{/if}}
+              {{#if canEdit}}
+              <h5>Edit comment</h5>
+              <div class="form-outline">
+                <form action="/news/edit/{{_id}}" method="post">
+                  <label class="form-label" for="textAreaExample"></label>
+                    <textarea class="form-control" id="textAreaExample" type="textarea" name="contenido"
+                      rows="4"></textarea>
+                  <div class="d-flex justify-content-between mt-3">
+                    <button type="submit" class="btn btn-danger">Edit  <i class="fa-solid fa-pen"></i></button>
+                </form>
+              </div>
+              {{/if}}
             </div>
+          </div>
         </div>
+      </div>
     </div>
-     {{!-- {{#if canDelete}}
-        <div>
-          
-          <form action="/news/delete/{{_id}}" method="get">
-          <button type="submit">Delete</button>
-          </form>
-          
-        </div>
-        {{/if}} --}}
-    {{/each}}
-    </section>
+  </div>
+  </div>
+  </div>
+  </div>
+  {{!-- {{#if canDelete}}
+  <div>
+
+    <form action="/news/delete/{{_id}}" method="get">
+      <button type="submit">Delete</button>
+    </form>
+
+  </div>
+  {{/if}} --}}
+  {{/each}}
+</section>
 {{!-- <p>{{Newscomments.result.1.comments.0.contenido}}</p> --}}
 <div class="container my-5 py-5 text-dark">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-10 col-lg-8 col-xl-6">
-        <div class="card">
-            <div class="card-body p-4">
-                <div class="d-flex flex-start w-100">
-                    <div class="w-100">
-                    <h5>add a comment</h5>
-                    <div class="form-outline">
-                    <form action="/news/{{news.date}}" method="post">
-                    <label class="form-label" for="textAreaExample">
-                    <textarea class="form-control" id="textAreaExample"type="textarea" name="contenido" rows="4"></textarea>
-                    </label>
-                    <div class="d-flex justify-content-between mt-3">
-                    <button type="submit" class="btn btn-danger">Send<i class="fas fa-long-arrow-alt-right ms-1"></i></button>
-                    </form>
-                    </div>
-                    </div>
-                </div>
-                </div>
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-10 col-lg-8 col-xl-6">
+      <div class="card">
+        <div class="card-body p-4">
+          <div class="d-flex flex-start w-100">
+            <div class="w-100">
+              <h5>add a comment</h5>
+              <div class="form-outline">
+                <form action="/news/{{news.date}}" method="post">
+                  <label class="form-label" for="textAreaExample"></label>
+                    <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
+                      rows="4"></textarea>
+                  <div class="d-flex justify-content-between mt-3">
+                    <button type="submit" class="btn btn-danger">Send<i
+                        class="fas fa-long-arrow-alt-right ms-1"></i></button>
+                </form>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    </div>
+  </div>
+</div>
 </div>
 <nav aria-label="...">
   <ul class="pagination pagination-sm">
@@ -102,3 +107,9 @@
   </ul>
 </nav>
 <script src="https://kit.fontawesome.com/c961c96d7d.js" crossorigin="anonymous"></script>
+
+{{!-- <form action="/news/{{news.date}}" method="post">
+                  <label class="form-label" for="textAreaExample">
+                    <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
+                      rows="4"></textarea>
+                  </label> --}}

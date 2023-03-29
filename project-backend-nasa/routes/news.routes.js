@@ -17,7 +17,7 @@ const { populate } = require('../models/User.model');
 router.get("/", isLoggedIn, (req, res, next) => {
   nasaService.listNews()
     .then(response => {
-      const newsApi = response.data.reverse()
+      const newsApi = response.data
       newsApi.forEach(oneNews => {
         const { date, title } = oneNews
         News.find({ date })
@@ -78,7 +78,8 @@ router.get("/:date", isLoggedIn, (req, res, next) => {
       let comments = [];
       result.comments.forEach(comment => {
         let commentAux = comment
-        if (req.session.currentUser.username == comment.author.username || req.session.currentUser.isAdmin === true){
+        console.log(comment)
+        if (req.session.currentUser._id == comment.author._id || req.session.currentUser.isAdmin){
           commentAux.canDelete = true
           commentAux.canEdit = true
         }
