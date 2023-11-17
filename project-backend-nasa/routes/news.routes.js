@@ -37,7 +37,6 @@ router.get("/", isLoggedIn, (req, res, next) => {
   });
   
   
-  /////cuando hacemos click a la noticia y se habre en una nueva pagina //////
   router.get("/delete/:id", (req,res,next) => {
     let id = req.params.id;
     Comment.findByIdAndDelete(id)
@@ -60,43 +59,68 @@ router.get("/", isLoggedIn, (req, res, next) => {
     .catch((err) => console.log(err))
   })
 
-router.get("/:date", isLoggedIn, (req, res, next) => {
-  let { date } = req.params;
-  News.findOne({ date })
-  .populate("comments")
-  .populate({
-    path: "comments",
-    populate: {
-      path: "author",
-      model: "User"
-    }
-  })
-  .then(result => {
-    nasaService.getNews(date)
-    .then(response => {
-      let comments = [];
-      result.comments.forEach(comment => {
-        let commentAux = comment
-        console.log(comment)
-        if (req.session.currentUser._id == comment.author._id || req.session.currentUser.isAdmin){
-          commentAux.canDelete = true
-          commentAux.canEdit = true
+  router.get("/:date", isLoggedIn, (req, res, next) => {
+    let { date } = req.params;
+    News.findOne({ date })
+      .populate("comments")
+      .populate({
+        path: "comments",
+        populate: {
+          path: "author",
+          model: "User"
         }
-        comments.push(comment)
+      })
+      .then(result => {
+        nasaService.getNews(date)
+          .then(response => {
+            let comments = [];
+            result.comments.forEach(comment => {
+              let commentAux = comment;
+              console.log(comment);
+              if (req.session.currentUser._id == comment.author._id || req.session.currentUser.isAdmin) {
+                commentAux.canDelete = true;
+                commentAux.canEdit = true;
+              }
+              
+              // Agregar la fecha formateada al comentario
+              commentAux.simplifiedDate = new Date(commentAux.date).toLocaleDateString("es-ES", {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                hour: "numeric",
+                minute: "numeric"
+              });
+  
+              comments.push(commentAux); // Agrega el comentario auxiliar a la lista de comentarios
+            });
+  
+            let simplifiedNewsDate = new Date(response.data.date).toLocaleDateString("es-ES", {
+              year: "numeric",
+              month: "short",
+              day: "numeric",
+              hour: "numeric",
+              minute: "numeric"
+            });
+  
+            let data = {
+              news: { ...response.data, date: simplifiedNewsDate }, // Sobrescribe la fecha con la simplificada
+              Newscomments: { ...result, comments }, // Sobrescribe los comentarios con las fechas formateadas
+              user: req.session.currentUser,
+            };
+  
+            res.render("auth/newsDetail", data);
           })
-          let data = {
-            news: response.data,
-            Newscomments: result,
-            user: req.session.currentUser,
-          }
-          data.Newscomments.comments = comments
-          console.log("DATE: ", data.Newscomments.comments)
-          
-          /*  console.log("COMMMENTS: ", data.Newscomments.result[0].comments[3].author.username) */
-          res.render("auth/newsDetail", data);
-        })
-    })
-})
+          .catch(err => {
+            console.error(err);
+            res.status(500).send("Error interno del servidor");
+          });
+      })
+      .catch(err => {
+        console.error(err);
+        res.status(500).send("Error interno del servidor");
+      });
+  });
+  
 
 router.post("/:date", (req, res, next) => {
   let { date } = req.params;

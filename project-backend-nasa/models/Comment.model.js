@@ -7,8 +7,7 @@ const commentSchema = new Schema(
             limit: 200
         },
         date: {
-            type: Date,
-            default: Date.now,
+            type: String,
             required: true
         },
         author: {

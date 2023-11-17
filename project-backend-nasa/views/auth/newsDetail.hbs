@@ -1,81 +1,76 @@
-<div>
-  <p class="h4" id="date-margin1">{{news.date}}</p>
-  <h1 class="card-title" id="text-title1">{{news.title}}</h1>
-  <div class="clearfix">
-    <img src={{news.url}} class="img-fluid rounded mx-auto d-flex" id="img-id-config" alt="nasa">
-    <p class="text-left lead mp-auto d-flex" id="textcontent1">{{news.explanation}}</p>
+<div class="container">
+  <p class="h4 text-left ml-2 text-white">{{news.date}}</p>
+  <div class="card mx-auto" style="max-width: 100%; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(25px);">
+    <h1 class="card-header text-center text-white">{{news.title}}</h1>
+    <img src="{{news.url}}" class="card-img-top img-fluid" alt="nasa">
+    <div class="card-body">
+      <p class="card-text text-center text-white lead">{{news.explanation}}</p>
+    </div>
   </div>
 </div>
 
-{{#each Newscomments.comments}}
-<section style="background-color: #f8f8f8;">
-  <div class="container my-2 py-2 text-dark">
-    <div class="row d-flex justify-content-center">
-      <div class="col-md-11 col-lg-9 col-xl-7">
-        <div class="d-flex flex-start mb-1">
-          <div class="card w-100">
-            <div class="card-body p-3">
-              <div class="">
-                <h3 class="mt-2 mb-0"> <i class="fa-regular fa-user"></i> <a
-                    href="/auth/profile/{{author.id}}">{{author.username}}</a></h3>
-                <p class="small"><i class="fa-regular fa-clock"></i> {{date}}</p>
-                <p> {{contenido}}</p>
-              </div>
-              {{#if canDelete}}
-              <div>
-                <form action="/news/delete/{{_id}}" method="get">
-                  <a href="/news/delete/{{_id}}"><i class="fa-regular fa-trash-can" type="submit"></i></a>
-                </form>
-              </div>
-              {{/if}}
-              {{#if canEdit}}
-              <h5>Edit comment</h5>
-              <div class="form-outline">
-                <form action="/news/edit/{{_id}}" method="post">
-                  <label class="form-label" for="textAreaExample"></label>
-                    <textarea class="form-control" id="textAreaExample" type="textarea" name="contenido"
-                      rows="4"></textarea>
-                  <div class="d-flex justify-content-between mt-3">
-                    <button type="submit" class="btn btn-danger">Edit  <i class="fa-solid fa-pen"></i></button>
-                </form>
-              </div>
-              {{/if}}
-            </div>
-          </div>
+
+<!-- Botón para activar el colapso -->
+<div class="container">
+  <button class="btn btn-light mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#commentsCollapse"
+    aria-expanded="true" aria-controls="commentsCollapse">
+    Comments
+  </button>
+</div>
+
+<!-- Área que se colapsará -->
+<div class="collapse" id="commentsCollapse">
+  {{#each Newscomments.comments}}
+  <div class="container">
+    <div class="card mx-auto mt-5"
+      style="max-width: 100%; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(25px);">
+      <h5 class="card-header text-white"><i class="fa-regular fa-clock"></i> {{simplifiedDate}}</h5>
+      <div class="card-body">
+        <h5 class="card-title"><i class="fa-regular fa-user"></i><a href="/auth/profile/{{author.id}}">
+            {{author.username}}</a></h5>
+        <p class="text-white">{{contenido}}</p>
+
+        <!-- Editar comentario -->
+        <div class="mb-3">
+          {{#if canEdit}}
+          <label for="exampleFormControlTextarea1" class="form-label text-white-50">Edit comment</label>
+          <form action="/news/edit/{{_id}}" method="post">
+            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="contenido"></textarea>
+            <button type="submit" class="btn btn-outline-light mt-3 float-end">Edit <i
+                class="fa-solid fa-pen"></i></button>
+          </form>
+          {{/if}}
         </div>
+
+        <!-- Eliminar comentario -->
+        {{#if canDelete}}
+        <form action="/news/delete/{{_id}}" method="get">
+          <button type="submit" class="btn btn-outline-light me-md-2 float-end">Delete <i
+              class="fa-regular fa-trash-can"></i></button>
+        </form>
+        {{/if}}
       </div>
     </div>
   </div>
-  </div>
-  </div>
-  </div>
-  {{!-- {{#if canDelete}}
-  <div>
-
-    <form action="/news/delete/{{_id}}" method="get">
-      <button type="submit">Delete</button>
-    </form>
-
-  </div>
-  {{/if}} --}}
   {{/each}}
-</section>
-{{!-- <p>{{Newscomments.result.1.comments.0.contenido}}</p> --}}
-<div class="container my-5 py-5 text-dark">
+</div>
+
+
+<div class="container">
   <div class="row d-flex justify-content-center">
     <div class="col-md-10 col-lg-8 col-xl-6">
-      <div class="card">
+      <div class="card mx-auto mt-3 mb-3" style="max-width: 100%; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(25px);">
         <div class="card-body p-4">
           <div class="d-flex flex-start w-100">
             <div class="w-100">
-              <h5>add a comment</h5>
+              <h5 class="text-white-50">Add a comment</h5>
               <div class="form-outline">
                 <form action="/news/{{news.date}}" method="post">
                   <label class="form-label" for="textAreaExample"></label>
-                    <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
-                      rows="4"></textarea>
-                  <div class="d-flex justify-content-between mt-3">
-                    <button type="submit" class="btn btn-danger">Send<i
+                  <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
+                    rows="4"></textarea>
+        
+                    <button type="submit" class="btn btn-outline-light float-end mt-3">Send<i
                         class="fas fa-long-arrow-alt-right ms-1"></i></button>
                 </form>
               </div>
@@ -86,30 +81,10 @@
     </div>
   </div>
 </div>
-</div>
-<nav aria-label="...">
-  <ul class="pagination pagination-sm">
-    <li class="page-item active" aria-current="page">
-      {{!-- <span class="page-link">1</span>
-    </li> --}}
-    <li class="page-item"><a class="page-link" href="/news/2023-01-01">1</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-02">2</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-03">3</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-04">4</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-05">5</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-06">6</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-07">7</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-08">8</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-09">9</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-10">10</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-11">11</a></li>
-    <li class="page-item"><a class="page-link" href="/news/2023-01-12">12</a></li>
-  </ul>
-</nav>
 <script src="https://kit.fontawesome.com/c961c96d7d.js" crossorigin="anonymous"></script>
 
 {{!-- <form action="/news/{{news.date}}" method="post">
-                  <label class="form-label" for="textAreaExample">
-                    <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
-                      rows="4"></textarea>
-                  </label> --}}
+  <label class="form-label" for="textAreaExample">
+    <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
+      rows="4"></textarea>
+  </label> --}}

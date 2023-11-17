@@ -1,37 +1,39 @@
 <div class="container py-5 h-100">
   <div class="row d-flex justify-content-center align-items-center h-100">
     <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-       <div class=" card bg-dark text-white" style="border-radius:1rem;">
+      <div class="card" style="border-radius: 1rem; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
         <div class="card-body p-5 text-center">
-    <div class="mb-md-5 mt-md-4 ">
-      <h1 class="fw-bold mb-2 text-uppercase">Signup</h1>
-       <p class="text-white-50 mb-3">Please create your username and enter your email and password!</p>
-      {{!-- <hr> --}}
-      <form action="/auth/signup" method="POST">
-        <div class="form-outline form-white mb-2 mx-auto">
-          <label for="username" class="form-label">Username</label>
-          <input type="text" class="form-control form-control-lg" id="username" name="username">
-          {{!-- <div class="form-text">poner los datos sin errores</div> --}}
-        </div>
-        <div class="form-outline form-white mb-2 mx-auto">
-          <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control form-control-lg" id="email" name="email">
-        </div>
-        <div class="form-outline form-white mb-2 mx-auto">
-          <label for="password" class="form-label">Password</label>
-          <input type="password" class="form-control form-control-lg" id="password" name="password">
-          <div class="form-text">crea una contraseña segura</div>
-        </div>
-          <button type="submit" class="btn btn-outline-light btn-lg px-5">Sign Up</button>
-        
+          <div class="mb-md-5 mt-md-4 ">
+            <h1 class="fw-bold mb-2 text-uppercase text-white">Sign up</h1>
+            <p class="text-white-50 mb-3">Please create your username and enter your email and password!</p>
+            {{!--
+            <hr> --}}
+            <form action="/auth/signup" method="POST">
+              <div class="form-outline form-white mb-2 mx-auto">
+                <label for="username" class="form-label text-white-50">Username</label>
+                <input type="text" class="form-control form-control-lg" id="username" name="username">
+                {{!-- <div class="form-text">poner los datos sin errores</div> --}}
+              </div>
+              <div class="form-outline form-white mb-2 mx-auto">
+                <label for="email" class="form-label text-white-50">Email</label>
+                <input type="email" class="form-control form-control-lg" id="email" name="email">
+              </div>
+              <div class="form-outline form-white mb-2 mx-auto">
+                <label for="password" class="form-label text-white-50">Password</label>
+                <input type="password" class="form-control form-control-lg" id="password" name="password">
+              </div>
+              <button type="submit" class="btn btn-outline-light btn-lg px-5 mt-5">Sign Up</button>
+
+              <p class="text-white-50 mt-5">Do you already have an account?<a href="/auth/login">click here </a>to log in</p>
 
 
-        {{#if errorMessage}}
-        <p class="error">{{errorMessage}}</p>
-        {{/if}}
-      </form>
-      </div>
-      </div>
+
+              {{#if errorMessage}}
+              <p class="error">{{errorMessage}}</p>
+              {{/if}}
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>

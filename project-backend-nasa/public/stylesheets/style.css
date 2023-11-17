@@ -18,6 +18,17 @@ h1 {
   z-index: -1;
   height:1200px;
 } */
+
+
+  body {
+    background-image: url(https://www.nasa.gov/wp-content/uploads/2022/07/web_first_images_release_0.png?w=2048); /* Reemplaza 'ruta/de/la/imagen.jpg' con la ruta de tu imagen */
+    background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el cuerpo */
+    /* Otros estilos opcionales */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-attachment: fixed; /* Fija la imagen de fondo para que no se desplace al hacer scroll */
+  }
+  
+
 #imgsize{
   width: 300px;
   height: 300px;
@@ -34,9 +45,9 @@ h1 {
 body {
   background-color: #f8f8f8;
 }
-.card:hover{
+#card-news:hover{
 
-  box-shadow: 5px 6px 6px 2px #e9ecef;
+  box-shadow: 5px 6px 6px 5px rgba(0, 0, 1, 0.412);
   transform: scale(1.1);
 }
 #img-id-config{
@@ -106,3 +117,48 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bolder;
 }
+.card {
+  box-shadow: 0 0 20px 10px rgba(0, 0, 0, 0.3);
+}
+
+
+
+/* Carousel styling */
+/* #introCarousel,
+.carousel-inner,
+.carousel-item,
+.carousel-item.active {
+  height: 100vh;
+}
+
+.carousel-item:nth-child(1) {
+  background-image: url('https://mdbootstrap.com/img/Photos/Others/images/76.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.carousel-item:nth-child(2) {
+  background-image: url('https://mdbootstrap.com/img/Photos/Others/images/77.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+.carousel-item:nth-child(3) {
+  background-image: url('https://mdbootstrap.com/img/Photos/Others/images/78.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+}
+
+/* Height for devices larger than 576px */
+/* @media (min-width: 992px) {
+  #introCarousel {
+    margin-top: -58.59px;
+  }
+}
+
+.navbar .nav-link {
+  color: #fff !important;
+} */ 

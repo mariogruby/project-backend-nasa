@@ -16,31 +16,32 @@
   {{!-- <video
     src="https://vod-progressive.akamaized.net/exp=1677167546~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1631%2F12%2F308156997%2F1184393755.mp4~hmac=e7fb4efb91c6da217aaf5b9de9e36e9b0e36a9a7dda666c947e78a529b6af82d/vimeo-prod-skyfire-std-us/01/1631/12/308156997/1184393755.mp4"
     autoplay="true" muted="true" loop="true"></video> --}}
-  <nav class="navbar navbar-expand-lg bg-dark mb-4" data-bs-theme="dark">
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark p-3 mt-2" style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border-radius: 3rem;">
     <div class="container-fluid">
-      {{!-- <a class="navbar-brand" href="/">{{appTitle}}</a> --}}
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <a class="navbar-brand" href="/">NASA FORUM</a>
+<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+	      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+    <ul class="navbar-nav ms-auto ">
           <li class="nav-item">
-            <a class="nav-link" href="/">MAIN</a>
+            <a class="nav-link mx-2 activate" id="quitMain"aria-current="page" href="/">MAIN</a>
+
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/news">NEWS</a>
+            <a class="nav-link mx-2" href="/news">NEWS</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">AUTH</a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="/auth/signup">SIGN UP</a></li>
-              <li><a class="dropdown-item" href="/auth/login">LOGIN</a></li>
+            <a class="nav-link mx-2 dropdown-toggle" href="#"id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">AUTH
+              </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" id="off-Signup" href="/auth/signup">SIGN UP</a></li>
+              <li><a class="dropdown-item" id="quitLogin" href="/auth/login">LOGIN</a></li>
               <li><a class="dropdown-item" href="/auth/logout">LOG OUT</a></li>
-              <li>
+              {{!-- <li>
                 <hr class="dropdown-divider">
-              </li>
+              </li> --}}
               <li>
                 {{!-- <a class="dropdown-item" href="/auth/user/{{user._id}}">PROFILE</a> --}}
                 <a class="dropdown-item" href="/auth/profile/">PROFILE</a>
@@ -71,6 +72,17 @@
     integrity="sha512-LUKzDoJKOLqnxGWWIBM4lzRBlxcva2ZTztO8bTcWPmDSpkErWx0bSP4pdsjNH8kiHAUPaT06UXcb+vOEZH+HpQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="/js/script.js"></script>
+
+  <script>
+  function handleSuccessfulLogin() {
+    document.getElementById('quitMain').style.display = 'none';
+    document.getElementById('quitLogin').style.display = 'none';
+    //{{!-- document.getElementById('off-Signup').style.display = 'none'; --}}
+  }
+  setTimeout(function() {
+    handleSuccessfulLogin(); 
+  }, 3000); 
+</script>
 </body>
 
 </html>
