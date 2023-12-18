@@ -1,19 +1,32 @@
-<h2 class="text-center text-white">NEWS</h2>
-<div class="container-fluid d-flex flex-wrap">
-
-    {{#each news}}
-    <div class="row row-cols-2 row-cols-lg-5 g-2 g-lg-3">
-    <div class="col">
-    <div class="p-3">
-    <div class="card" id="card-news" style="width: 21rem; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(25px);">
-         {{!-- <div class="card" style="border-radius: 1rem; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);"> --}}
-        <div class="card-body">
-        <h6 class="card-title text-white">{{title}}</h6>
-         <a href="/news/{{date}}"><img src={{url}} class="card-img-top rounded mx-auto d-block"  id ="imgsize"alt="nasa"></a>
+<div class="container" id="loading">
+    <i class="fa-solid fa-spinner fa-spin-pulse"  id="spinner-news" style="color: #ffffff;"></i>
+</div>
+<div class="container" style="display: none;" id="newsContainer">
+    <h2 class="text-center text-white">NEWS</h2>
+    <div class="row">
+        {{#each news}}
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <a href="/news/{{date}}" class="card-img-top"><img src={{url}} id="img-size" alt="Card image cap"></a>
+                <div class="card-body">
+                    <a href="/news/{{date}}" style="text-decoration: none; color: black;">
+                        <h5 class="card-title">{{title}}</h5>
+                    </a>
+                    <p class="card-text" id="card-text">
+                        {{explanation}}
+                    </p>
+                    <p class="card-text">
+                        <small class="text-muted">
+                            {{!-- <i class="fas fa-eye"></i> --}}
+                            <i class="fa-solid fa-check"></i> API NASA
+                            <i class="fa-regular fa-calendar-days"></i> {{date}}
+                        </small>
+                        {{!-- <button type="button" class="btn btn-outline-secondary float-end">Read more</button> --}}
+                    </p>
+                </div>
+            </div>
         </div>
-        </div>
-        </div>
-        </div>
+        {{/each}}
     </div>
-
-    {{/each}}
+</div>
+<script src="../js/loading-masonry.js"></script>

@@ -1,56 +1,203 @@
-{{!-- <h1 class="text-center fw-bolder title-nasa"> FORO NASA 🚀 <br> 🌟 Interactive Community.</h1>
-<div class="homepage-video-container">
-        <video autoPlay loop muted>
-            <source src="/videos/tierra.mp4" type="video/mp4">
-        </video>
-        <div class="homepage-video-overlay">
-            
-        </div>
-</div> --}}
-<div class="container py-5 h-100">
-  <div class="row d-flex justify-content-center align-items-center h-100">
-    <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-      <div class="card" style="border-radius: 1rem; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
-        <div class="card-body p-5 text-center">
-          <div class="mb-md-5 mt-md-4 ">
-            <h1 class="fw-bold mb-2 text-uppercase text-white">Sign up</h1>
-            <p class="text-white-50 mb-3">Please create your username and enter your email and password!</p>
-            {{!--
-            <hr> --}}
-            <form action="/auth/signup" method="POST">
-              <div class="form-outline form-white mb-2 mx-auto">
-                <label for="username" class="form-label text-white-50">Username</label>
-                <input type="text" class="form-control form-control-lg" id="username" name="username">
-                {{!-- <div class="form-text">poner los datos sin errores</div> --}}
-              </div>
-              <div class="form-outline form-white mb-2 mx-auto">
-                <label for="email" class="form-label text-white-50">Email</label>
-                <input type="email" class="form-control form-control-lg" id="email" name="email">
-              </div>
-              <div class="form-outline form-white mb-2 mx-auto">
-                <label for="password" class="form-label text-white-50">Password</label>
-                <input type="password" class="form-control form-control-lg" id="password" name="password">
-              </div>
-              <button type="submit" class="btn btn-outline-light btn-lg px-5 mt-5">Sign Up</button>
+<!-- fist -->
+<div id="first-section" class="container d-flex align-items-center justify-content-center text-center h-100 py-5"
+  style="margin-top: 180px; margin-bottom: 300px;">
+  <div class="text-white">
+    <h1 class="mb-3 text-white">Forum Nasa</h1>
+    <h5 class="mb-4 text-white-50">Interact with the latest NASA news</h5>
+    <!-- signup modal button -->
+    <a class="btn btn-outline-light btn-lg m-2" href="/auth/signup" role="button" data-bs-toggle="modal"
+      data-bs-target="#signupModal">Sign Up</a>
+    <!-- login modal button -->
+    <a class="btn btn-outline-light btn-lg m-2" href="/auth/login" role="button" data-toggle="modal"
+      data-target="#loginModal">Log In</a>
+  </div>
+</div>
 
-              <p class="text-white-50 mt-5">Do you already have an account?<a href="/auth/login">click here </a>to log in</p>
+<!-- Login modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content"
+      style="border-radius: 1rem; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="exampleModalLongTitle">Log in</h5>
+        {{!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span> --}}
+          <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+          {{!-- </button> --}}
+      </div>
+      <div class="modal-body p-5">
 
 
+        <h3 class="text-center font-weight-bold text-white">FORUM NASA</h3>
+        <form id="loginForm" action="/auth/login" method="POST">
 
-              {{#if errorMessage}}
-              <p class="error">{{errorMessage}}</p>
-              {{/if}}
-            </form>
+          <div class="text-center">
+            <span class="text-white-50"><i class="fa-solid fa-rocket fa-beat-fade fa-5x"></i></span>
           </div>
+
+          <div class="form-floating mt-3 mb-2">
+            <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+          </div>
+
+
+          <div class="form-floating mb-2">
+            <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
+            <label for="floatingInput">Password</label>
+          </div>
+          <button id="loginBtn" type="submit" class="btn btn-outline-light d-grid gap-2 col-6 mx-auto mb-2 mt-3">
+            <p class="loginText mb-0" id="loginText">Log in</p>
+            <i id="spinner" class="fas fa-spinner fa-spin" style="display: none;"></i>
+          </button>
+          <p class="text-white-50 text-center mt-2">Do not you have an account yet? <a href="/auth/signup">click here
+            </a>to create an account.</p>
+          {{#if errorMessage}}
+          <p id="error" class="mt-3">{{errorMessage}}</p>
+          {{/if}}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- signup modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="signupModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content"
+      style="border-radius: 1rem; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
+      <div class="modal-header">
+        <h5 class="modal-title text-white" id="exampleModalLongTitle">Sign up</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-5">
+
+
+        <h3 class="text-center font-weight-bold text-white">FORUM NASA</h3>
+        <form id="signupForm" action="/auth/signup" method="POST">
+
+          <div class="text-center">
+            <span class="text-white-50"><i class="fa-solid fa-rocket fa-beat-fade fa-5x"></i></span>
+          </div>
+
+          <div class="form-floating mt-3 mb-2">
+            <input type="text" class="form-control" name="username" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Username</label>
+          </div>
+
+          <div class="form-floating mb-2">
+            <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+          </div>
+
+
+          <div class="form-floating mb-2">
+            <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
+            <label for="floatingInput">Password</label>
+          </div>
+          <button id="signupBtn" type="submit" class="btn btn-outline-light d-grid gap-2 col-6 mx-auto mb-2 mt-3">
+            <p class="signupText mb-0" id="signupText">Sign up</p>
+            <i id="spinnerTwo" class="fas fa-spinner fa-spin" style="display: none;"></i>
+          </button>
+          <p class="text-white-50 text-center mt-2">Do you already have an account? <a href="/auth/login">click here
+            </a>to log in.</p>
+         {{#if errorMessage}}
+          <p id="error" class="mt-3">{{errorMessage}}</p>
+          {{/if}}
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{{!-- top 3 news hard-coded card --}}
+<div class="container" id="newsContainer">
+  <h2 class="text-center text-white">TOP 3 NEWS</h2>
+  <div class="row">
+    <div class="col-md-4">
+      {{!-- card 1 --}}
+      <div class="card mb-4">
+        <a href="/news/{{date}}" class="card-img-top"><img
+            src="https://apod.nasa.gov/apod/image/2312/Exaray_OsakaU_1080.jpg" id="img-size" alt="Card image cap"></a>
+        <div class="card-body">
+          <a href="/news/{{date}}" style="text-decoration: none; color: black;">
+            <h5 class="card-title">Energetic Particle Strikes the Earth</h5>
+          </a>
+          <p class="card-text text-muted">
+            It was one of the most energetic particles ever known to strike the Earth -- but where did it come from?
+            Dubbed Amaterasu after the Shinto sun goddess, this particle, as do all cosmic rays that strike the Earth's
+            atmosphere, caused an air shower...
+          </p>
+          <p class="card-text">
+            <small class="text-muted">
+              {{!-- <i class="fas fa-eye"></i> --}}
+              <i class="fa-solid fa-check"></i> API NASA
+              <i class="fa-regular fa-calendar-days"></i> 2023-12-05
+            </small>
+            {{!-- <button type="button" class="btn btn-outline-secondary float-end">Read more</button> --}}
+          </p>
+        </div>
+      </div>
+    </div>
+    {{!-- card 2 --}}
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <a href="/news/{{date}}" class="card-img-top"><img
+            src="https://apod.nasa.gov/apod/image/2312/Exaray_OsakaU_1080.jpg" id="img-size" alt="Card image cap"></a>
+        <div class="card-body">
+          <a href="/news/{{date}}" style="text-decoration: none; color: black;">
+            <h5 class="card-title">Energetic Particle Strikes the Earth</h5>
+          </a>
+          <p class="card-text text-muted">
+            It was one of the most energetic particles ever known to strike the Earth -- but where did it come from?
+            Dubbed Amaterasu after the Shinto sun goddess, this particle, as do all cosmic rays that strike the Earth's
+            atmosphere, caused an air shower...
+          </p>
+          <p class="card-text">
+            <small class="text-muted">
+              {{!-- <i class="fas fa-eye"></i> --}}
+              <i class="fa-solid fa-check"></i> API NASA
+              <i class="fa-regular fa-calendar-days"></i> 2023-12-05
+            </small>
+            {{!-- <button type="button" class="btn btn-outline-secondary float-end">Read more</button> --}}
+          </p>
+        </div>
+      </div>
+    </div>
+    {{!-- card 3 --}}
+    <div class="col-md-4">
+      <div class="card mb-4">
+        <a href="/news/{{date}}" class="card-img-top"><img
+            src="https://apod.nasa.gov/apod/image/2312/Exaray_OsakaU_1080.jpg" id="img-size" alt="Card image cap"></a>
+        <div class="card-body">
+          <a href="/news/{{date}}" style="text-decoration: none; color: black;">
+            <h5 class="card-title">Energetic Particle Strikes the Earth</h5>
+          </a>
+          <p class="card-text text-muted">
+            It was one of the most energetic particles ever known to strike the Earth -- but where did it come from?
+            Dubbed Amaterasu after the Shinto sun goddess, this particle, as do all cosmic rays that strike the Earth's
+            atmosphere, caused an air shower...
+          </p>
+          <p class="card-text">
+            <small class="text-muted">
+              {{!-- <i class="fas fa-eye"></i> --}}
+              <i class="fa-solid fa-check"></i> API NASA
+              <i class="fa-regular fa-calendar-days"></i> 2023-12-05
+            </small>
+            {{!-- <button type="button" class="btn btn-outline-secondary float-end">Read more</button> --}}
+          </p>
         </div>
       </div>
     </div>
   </div>
-<script>
-  function handleSuccessfulLogin() {
-    document.getElementById('loginModal').style.display = 'none';
-  }
-  setTimeout(function() {
-    handleSuccessfulLogin(); 
-  }, 3000); 
-</script>
+</div>
+<!-- jQuery CDN -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- scroll.js imported -->
+<script src="/js/scroll.js"></script>
+<!-- loading-buton.js imported -->
+<script src="/js/loading-buton.js"></script>
+
+

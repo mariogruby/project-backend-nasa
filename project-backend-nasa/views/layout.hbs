@@ -10,34 +10,57 @@
     integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
   <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="/stylesheets/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+    integrity="sha512-BzOR7e1jrTHyXGEQ1bRZNodgVtKm/H0ue7hf5TGpAaAXhCgVdP3cgrqg8sL+sFVYmC+JpaaCVKG5Bh1ZH+/EyA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-  {{!-- <video
-    src="https://vod-progressive.akamaized.net/exp=1677167546~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F1631%2F12%2F308156997%2F1184393755.mp4~hmac=e7fb4efb91c6da217aaf5b9de9e36e9b0e36a9a7dda666c947e78a529b6af82d/vimeo-prod-skyfire-std-us/01/1631/12/308156997/1184393755.mp4"
-    autoplay="true" muted="true" loop="true"></video> --}}
-  <nav class="navbar sticky-top navbar-expand-lg navbar-dark p-3 mt-2" style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px); border-radius: 3rem;">
+  <video autoplay muted loop id="bg-video"
+    style="position: fixed; right: 0; bottom: 0; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -1;">
+    <source
+      src="/images/background-nasa.mp4"
+      type="video/mp4">
+  </video>
+  <nav class="navbar sticky-top navbar-expand-lg navbar-dark p-3"
+    style="background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(10px);">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">NASA FORUM</a>
-<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-	      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
-    <ul class="navbar-nav ms-auto ">
+      <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ms-auto ">
+          {{#if currentUser}}
+          {{!-- If a user is logged in, show other navigation links --}}
           <li class="nav-item">
-            <a class="nav-link mx-2 activate" id="quitMain"aria-current="page" href="/">MAIN</a>
-
+            <a class="nav-link mx-2 activate" aria-current="page" href="/news"></a>
           </li>
+          {{else}}
+          {{!-- If no user is logged in, show the MAIN link --}}
+          <li class="nav-item">
+            <a class="nav-link mx-2 activate" aria-current="page" href="/">MAIN</a>
+          </li>
+          {{/if}}
           <li class="nav-item">
             <a class="nav-link mx-2" href="/news">NEWS</a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link mx-2 dropdown-toggle" href="#"id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">AUTH
-              </a>
+            <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">AUTH
+            </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              {{#if currentUser}}
+              <li><a class="dropdown-item" id="off-Signup" href="/auth/signup"></a></li>
+              {{else}}
               <li><a class="dropdown-item" id="off-Signup" href="/auth/signup">SIGN UP</a></li>
+              {{/if}}
+              {{#if currentUser}}
+              <li><a class="dropdown-item" id="quitLogin" href="/auth/login"></a></li>
+              {{else}}
               <li><a class="dropdown-item" id="quitLogin" href="/auth/login">LOGIN</a></li>
+              {{/if}}
               <li><a class="dropdown-item" href="/auth/logout">LOG OUT</a></li>
               {{!-- <li>
                 <hr class="dropdown-divider">
@@ -52,9 +75,6 @@
       </div>
     </div>
   </nav>
-  <div>
-
-  </div>
   {{{body}}}
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -72,17 +92,99 @@
     integrity="sha512-LUKzDoJKOLqnxGWWIBM4lzRBlxcva2ZTztO8bTcWPmDSpkErWx0bSP4pdsjNH8kiHAUPaT06UXcb+vOEZH+HpQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="/js/script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+  <script src="https://kit.fontawesome.com/c961c96d7d.js" crossorigin="anonymous"></script>
 
-  <script>
-  function handleSuccessfulLogin() {
-    document.getElementById('quitMain').style.display = 'none';
-    document.getElementById('quitLogin').style.display = 'none';
-    //{{!-- document.getElementById('off-Signup').style.display = 'none'; --}}
-  }
-  setTimeout(function() {
-    handleSuccessfulLogin(); 
-  }, 3000); 
-</script>
 </body>
+<footer class="text-center text-white-50 text-lg-start text-muted mt-5"
+  style="background-color: rgba(64, 63, 63, 0.675); backdrop-filter: blur(10px);">
+  <!-- Section: Social media -->
+  <section class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom">
+    <!-- Left -->
+    <div class="me-5 d-none d-lg-block">
+      <span>Get connected with us on social networks:</span>
+    </div>
+    <!-- Left -->
+
+    <!-- Right -->
+    <div>
+      <a href="" class="me-4 text-reset">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="fab fa-twitter"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="fab fa-google"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="fab fa-instagram"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="fab fa-linkedin"></i>
+      </a>
+      <a href="" class="me-4 text-reset">
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <!-- Right -->
+  </section>
+  <!-- Section: Social media -->
+
+  <!-- Section: Links  -->
+  <section class="">
+    <div class="container text-center text-md-start mt-5">
+      <!-- Grid row -->
+      <div class="row mt-3">
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+          <!-- Content -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            <i class="fas fa-gem me-3"></i>Company name
+          </h6>
+          <p>
+            Proyect Forum Nasa
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">
+            Useful links
+          </h6>
+          <p>
+            <a href="#!" class="text-reset">Settings</a>
+          </p>
+          <p>
+            <a href="#!" class="text-reset">Help</a>
+          </p>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+          <!-- Links -->
+          <h6 class="text-uppercase fw-bold mb-4">Contact</h6>
+          <p><i class="fas fa-home me-3"></i> Barcelona, Spain, ES</p>
+          <p>
+            <i class="fas fa-envelope me-3"></i>
+            teambackendnasa@hotmail.com
+          </p>
+        </div>
+        <!-- Grid column -->
+      </div>
+      <!-- Grid row -->
+    </div>
+  </section>
+  <!-- Section: Links  -->
+
+  <!-- Copyright -->
+  <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+    © 2023 Copyright:
+  </div>
+  <!-- Copyright -->
+</footer>
 
 </html>

@@ -8,28 +8,35 @@
             <p class="text-white-50 mb-3">Please create your username and enter your email and password!</p>
             {{!--
             <hr> --}}
-            <form action="/auth/signup" method="POST">
-              <div class="form-outline form-white mb-2 mx-auto">
-                <label for="username" class="form-label text-white-50">Username</label>
-                <input type="text" class="form-control form-control-lg" id="username" name="username">
-                {{!-- <div class="form-text">poner los datos sin errores</div> --}}
-              </div>
-              <div class="form-outline form-white mb-2 mx-auto">
-                <label for="email" class="form-label text-white-50">Email</label>
-                <input type="email" class="form-control form-control-lg" id="email" name="email">
-              </div>
-              <div class="form-outline form-white mb-2 mx-auto">
-                <label for="password" class="form-label text-white-50">Password</label>
-                <input type="password" class="form-control form-control-lg" id="password" name="password">
-              </div>
-              <button type="submit" class="btn btn-outline-light btn-lg px-5 mt-5">Sign Up</button>
+            <form id="signupForm" action="/auth/signup" method="POST">
+        <div class="text-center">
+            <span class="text-white-50"><i class="fa-solid fa-rocket fa-beat-fade fa-5x"></i></span>
+          </div>
 
-              <p class="text-white-50 mt-5">Do you already have an account?<a href="/auth/login">click here </a>to log in</p>
+          <div class="form-floating mt-3 mb-2">
+            <input type="text" class="form-control" name="username" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Username</label>
+          </div>
+
+          <div class="form-floating mb-2">
+            <input type="email" class="form-control" name="email" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+          </div>
 
 
+          <div class="form-floating mb-2">
+            <input type="password" class="form-control" name="password" id="floatingPassword" placeholder="Password">
+            <label for="floatingInput">Password</label>
+          </div>
+              <button id="signupBtn" type="submit" class="btn btn-outline-light d-grid gap-2 col-6 mx-auto mb-2 mt-3">
+                <p class="signupText mb-0" id="signupText">Sign up</p>
+                <i id="spinnerTwo" class="fas fa-spinner fa-spin" style="display: none;"></i>
+              </button>
 
+              <p class="text-white-50 mt-5">Do you already have an account?<a href="/auth/login" class="text">click here
+                </a>to log in</p>
               {{#if errorMessage}}
-              <p class="error">{{errorMessage}}</p>
+              <p class="error text-warning">{{errorMessage}}</p>
               {{/if}}
             </form>
           </div>
@@ -37,3 +44,6 @@
       </div>
     </div>
   </div>
+</div>
+<!-- loading-button.js imported -->
+<script src="/js/loading-buton.js"></script>

@@ -12,6 +12,7 @@ const saltRounds = 10;
 // Require the User model in order to interact with the database
 const User = require("../models/User.model");
 const Comment = require("../models/Comment.model");
+const News = require("../models/News.model");
 
 // Require necessary (isLoggedOut and isLiggedIn) middleware in order to control access to specific routes
 const isLoggedOut = require("../middleware/isLoggedOut");
@@ -179,10 +180,12 @@ router.get("/profile/:id", isLoggedIn, (req,res,next) => {
   /* const user = req.session.currentUser; */
   User.findById(userId)
   .then((user) => {
-    Comment.find({author: userId})
+    Comment.find({author: userId,})
     .populate("news")
+    
     .then(comments => {
-      res.render("auth/profile", { user, comments });
+      res.render("auth/profile", { user, comments});
+      // console.log(comments);
     })
     
   })

@@ -1,8 +1,9 @@
 <div class="container">
   <p class="h4 text-left ml-2 text-white">{{news.date}}</p>
-  <div class="card mx-auto" style="max-width: 100%; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(25px);">
+  <div class="card mx-auto"
+    style="max-width: 100%; background-color: rgba(55, 55, 55, 0.3); backdrop-filter: blur(25px);">
     <h1 class="card-header text-center text-white">{{news.title}}</h1>
-    <img src="{{news.url}}" class="card-img-top img-fluid" alt="nasa">
+    <img src="{{news.url}}" class="card-img-top img-fluid" style="height: 800px;" alt="nasa">
     <div class="card-body">
       <p class="card-text text-center text-white lead">{{news.explanation}}</p>
     </div>
@@ -23,29 +24,44 @@
   {{#each Newscomments.comments}}
   <div class="container">
     <div class="card mx-auto mt-5"
-      style="max-width: 100%; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(25px);">
-      <h5 class="card-header text-white"><i class="fa-regular fa-clock"></i> {{simplifiedDate}}</h5>
+      style="max-width: 100%; background-color: rgba(55, 55, 55, 0.3); backdrop-filter: blur(25px);">
+      <h5 class="card-header text-white"><i class="fa-regular fa-clock"></i> {{formattedDate}}</h5>
       <div class="card-body">
-        <h5 class="card-title"><i class="fa-regular fa-user"></i><a href="/auth/profile/{{author.id}}">
-            {{author.username}}</a></h5>
+        <h5 class="card-title">
+          <i class="fa-regular fa-user fa-beat-fade" style="color: #7d7d7d;"></i>
+          <a href="/auth/profile/{{author.id}}" style="text-decoration: none; color: rgb(169, 168, 168);">
+            {{author.username}}
+          </a>
+        </h5>
+
         <p class="text-white">{{contenido}}</p>
 
         <!-- Editar comentario -->
         <div class="mb-3">
           {{#if canEdit}}
-          <label for="exampleFormControlTextarea1" class="form-label text-white-50">Edit comment</label>
-          <form action="/news/edit/{{_id}}" method="post">
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="contenido"></textarea>
-            <button type="submit" class="btn btn-outline-light mt-3 float-end">Edit <i
-                class="fa-solid fa-pen"></i></button>
-          </form>
+          <!-- Botón para colapsar el formulario -->
+          <button type="button" class="btn btn-outline-light float-end" data-bs-toggle="collapse"
+            data-bs-target="#collapseForm">
+            <i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+          </button>
+
+          <!-- Formulario -->
+          <div class="collapse" id="collapseForm">
+            <form action="/news/edit/{{_id}}" method="post">
+              <label for="exampleFormControlTextarea1" class="form-label text-white-50">Edit comment</label>
+              <textarea class="form-control mt-3" id="exampleFormControlTextarea1" rows="3" name="contenido"></textarea>
+              <button type="submit" class="btn btn-outline-light mt-3 me-md-2 float-end">send <i
+                  class="fas fa-long-arrow-alt-right ms-1"></i></button>
+            </form>
+          </div>
+
           {{/if}}
         </div>
 
         <!-- Eliminar comentario -->
         {{#if canDelete}}
         <form action="/news/delete/{{_id}}" method="get">
-          <button type="submit" class="btn btn-outline-light me-md-2 float-end">Delete <i
+          <button type="submit" class="btn btn-outline-light me-md-2 float-end"><i
               class="fa-regular fa-trash-can"></i></button>
         </form>
         {{/if}}
@@ -53,13 +69,15 @@
     </div>
   </div>
   {{/each}}
+  
 </div>
 
 
 <div class="container">
   <div class="row d-flex justify-content-center">
     <div class="col-md-10 col-lg-8 col-xl-6">
-      <div class="card mx-auto mt-3 mb-3" style="max-width: 100%; background-color: rgba(0, 0, 0, 0.3); backdrop-filter: blur(25px);">
+      <div class="card mx-auto mt-3 mb-3"
+        style="max-width: 100%;  background-color: rgba(55, 55, 55, 0.3); backdrop-filter: blur(25px);">
         <div class="card-body p-4">
           <div class="d-flex flex-start w-100">
             <div class="w-100">
@@ -69,9 +87,9 @@
                   <label class="form-label" for="textAreaExample"></label>
                   <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
                     rows="4"></textarea>
-        
-                    <button type="submit" class="btn btn-outline-light float-end mt-3">Send<i
-                        class="fas fa-long-arrow-alt-right ms-1"></i></button>
+
+                  <button type="submit" class="btn btn-outline-light float-end mt-3">Send<i
+                      class="fas fa-long-arrow-alt-right ms-1"></i></button>
                 </form>
               </div>
             </div>
@@ -82,9 +100,3 @@
   </div>
 </div>
 <script src="https://kit.fontawesome.com/c961c96d7d.js" crossorigin="anonymous"></script>
-
-{{!-- <form action="/news/{{news.date}}" method="post">
-  <label class="form-label" for="textAreaExample">
-    <textarea class="form-control d-flex mx-auto" id="textAreaExample" type="textarea" name="contenido"
-      rows="4"></textarea>
-  </label> --}}
